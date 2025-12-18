@@ -88,9 +88,9 @@ export default function FinalCTA({ onOpenQuiz }: FinalCTAProps) {
               className="inline-flex items-center justify-center w-16 h-16 md:w-20 md:h-20 rounded-full bg-primary-500/10 mb-4 md:mb-6 relative"
               whileHover={{ 
                 rotate: [0, -15, 15, 0],
-                scale: 1.15
+                scale: 1.15,
+                transition: { duration: 0.5 }
               }}
-              transition={{ duration: 0.5 }}
             >
               <Calculator className="w-8 h-8 md:w-10 md:h-10 text-primary-600 relative z-10" />
               <motion.div
