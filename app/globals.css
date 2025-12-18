@@ -1,0 +1,109 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    @apply border-neutral-200;
+  }
+  
+  html {
+    @apply scroll-smooth;
+  }
+  
+  body {
+    @apply bg-neutral-50 text-neutral-900;
+    font-feature-settings: 'kern' 1, 'liga' 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+  
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  .glass-card {
+    @apply bg-white/70 backdrop-blur-glass border border-white/50 shadow-glass;
+  }
+  
+  .glass-card-strong {
+    @apply bg-white/80 backdrop-blur-glass-strong border border-white/60 shadow-glass-strong;
+  }
+  
+  .btn-primary {
+    @apply px-4 py-2.5 md:px-8 md:py-4 bg-primary-500 text-white rounded-xl md:rounded-2xl text-sm md:text-base font-medium
+           shadow-medium hover:shadow-strong hover:bg-primary-600
+           active:scale-[0.98] transition-all duration-200
+           focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2
+           relative overflow-hidden;
+  }
+  
+  .btn-secondary {
+    @apply px-4 py-2.5 md:px-8 md:py-4 bg-white/80 backdrop-blur-glass text-primary-600 border border-primary-200
+           rounded-xl md:rounded-2xl text-sm md:text-base font-medium shadow-soft hover:shadow-medium hover:bg-white
+           active:scale-[0.98] transition-all duration-200
+           focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2;
+  }
+  
+  .section-padding {
+    @apply py-8 md:py-16 lg:py-20 px-4 md:px-6 lg:px-8;
+  }
+  
+  .container-custom {
+    @apply max-w-7xl mx-auto;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+  
+  .transform-gpu {
+    transform: translateZ(0);
+    will-change: transform;
+  }
+  
+  .bg-gradient-radial {
+    background: radial-gradient(circle, var(--tw-gradient-stops));
+  }
+  
+  .scroll-snap {
+    scroll-snap-type: y mandatory;
+  }
+  
+  .scroll-snap-section {
+    scroll-snap-align: start;
+  }
+  
+  .touch-interactive {
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+  
+  @media (max-width: 768px) {
+    /* Enhanced mobile animations */
+    .glass-card,
+    .glass-card-strong {
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .glass-card:active,
+    .glass-card-strong:active {
+      transform: scale(0.98);
+    }
+  }
+}
