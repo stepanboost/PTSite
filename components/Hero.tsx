@@ -3,6 +3,7 @@
 import { motion, useMotionValue, useSpring, useTransform, useScroll } from 'framer-motion'
 import { useEffect, useRef, useState } from 'react'
 import { ArrowRight, Shield, Clock, CheckCircle2, Sparkles } from 'lucide-react'
+import Image from 'next/image'
 
 interface HeroProps {
   onOpenQuiz: () => void
@@ -225,97 +226,35 @@ export default function Hero({ onOpenQuiz }: HeroProps) {
               transition={{ delay: 0.3, duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
               style={{ transformStyle: 'preserve-3d' }}
             >
-              <div className="relative inline-block">
-                {/* Logo SVG */}
-                <svg
-                  className="w-full max-w-sm md:max-w-xl lg:max-w-2xl h-auto"
-                  viewBox="0 0 500 180"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
+              <div className="relative inline-block w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl">
+                {/* Logo Image */}
+                <motion.div
+                  whileHover={{ scale: 1.02 }}
+                  transition={{ duration: 0.3 }}
+                  className="relative w-full h-auto"
                 >
-                  <defs>
-                    <linearGradient id="lightningGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                      <stop offset="0%" stopColor="#ff6b35" />
-                      <stop offset="100%" stopColor="#ad1a20" />
-                    </linearGradient>
-                  </defs>
-                  
-                  {/* Top line: 5 TEAM SERVICE */}
-                  <g>
-                    {/* Stylized red "5" - blocky and angular */}
-                    <path
-                      d="M 5 25 L 5 45 L 25 45 L 25 55 L 5 55 L 5 75 L 45 75 L 45 55 L 25 55 L 25 45 L 45 45 L 45 25 Z"
-                      fill="#ad1a20"
-                    />
-                    {/* TEAM SERVICE text */}
-                    <text
-                      x="60"
-                      y="65"
-                      fontSize="28"
-                      fontWeight="bold"
-                      fill="#0b0b0b"
-                      fontFamily="-apple-system, BlinkMacSystemFont, SF Pro Display, Segoe UI, Roboto, sans-serif"
-                    >
-                      TEAM SERVICE
-                    </text>
-                  </g>
-                  
-                  {/* Red separator line */}
-                  <line
-                    x1="0"
-                    y1="95"
-                    x2="500"
-                    y2="95"
-                    stroke="#ad1a20"
-                    strokeWidth="2.5"
+                  <Image
+                    src="/logo.png"
+                    alt="PROVOLTA & TEAM SERVICE"
+                    width={600}
+                    height={200}
+                    className="w-full h-auto object-contain"
+                    priority
+                    quality={95}
                   />
-                  
-                  {/* Bottom line: PROVOLTA with lightning bolt */}
-                  <g>
-                    {/* PRO text */}
-                    <text
-                      x="5"
-                      y="155"
-                      fontSize="42"
-                      fontWeight="bold"
-                      fill="#0b0b0b"
-                      fontFamily="-apple-system, BlinkMacSystemFont, SF Pro Display, Segoe UI, Roboto, sans-serif"
-                    >
-                      PRO
-                    </text>
-                    
-                    {/* Lightning bolt (replaces V) - more dynamic */}
-                    <path
-                      d="M 155 105 L 170 105 L 165 130 L 185 130 L 170 155 L 155 155 L 165 130 L 145 130 Z"
-                      fill="url(#lightningGradient)"
-                    />
-                    
-                    {/* OLTA text - O slightly integrated with lightning */}
-                    <text
-                      x="200"
-                      y="155"
-                      fontSize="42"
-                      fontWeight="bold"
-                      fill="#0b0b0b"
-                      fontFamily="-apple-system, BlinkMacSystemFont, SF Pro Display, Segoe UI, Roboto, sans-serif"
-                    >
-                      OLTA
-                    </text>
-                  </g>
-                </svg>
-                
-                <motion.span
-                  className="absolute -inset-2 bg-primary-500/20 blur-2xl -z-10"
-                  animate={{
-                    opacity: [0.3, 0.5, 0.3],
-                    scale: [1, 1.2, 1],
-                  }}
-                  transition={{
-                    duration: 3,
-                    repeat: Infinity,
-                    ease: 'easeInOut',
-                  }}
-                />
+                  <motion.span
+                    className="absolute -inset-2 bg-primary-500/20 blur-2xl -z-10"
+                    animate={{
+                      opacity: [0.3, 0.5, 0.3],
+                      scale: [1, 1.2, 1],
+                    }}
+                    transition={{
+                      duration: 3,
+                      repeat: Infinity,
+                      ease: 'easeInOut',
+                    }}
+                  />
+                </motion.div>
               </div>
             </motion.div>
             
