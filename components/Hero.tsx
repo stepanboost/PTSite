@@ -218,15 +218,95 @@ export default function Hero({ onOpenQuiz }: HeroProps) {
           </div>
 
           <div className="relative z-10">
-            <motion.h1
-              className="text-display-sm md:text-display font-bold text-neutral-900 mb-4 md:mb-6 text-balance relative"
+            <motion.div
+              className="mb-4 md:mb-6 relative flex justify-center"
               initial={{ opacity: 0, y: 30, rotateX: -90 }}
               animate={{ opacity: 1, y: 0, rotateX: 0 }}
               transition={{ delay: 0.3, duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
               style={{ transformStyle: 'preserve-3d' }}
             >
-              <span className="relative inline-block">
-                PROVOLTA & TEAM SERVICE
+              <div className="relative inline-block">
+                {/* Logo SVG */}
+                <svg
+                  className="w-full max-w-sm md:max-w-xl lg:max-w-2xl h-auto"
+                  viewBox="0 0 500 180"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <defs>
+                    <linearGradient id="lightningGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                      <stop offset="0%" stopColor="#ff6b35" />
+                      <stop offset="100%" stopColor="#ad1a20" />
+                    </linearGradient>
+                  </defs>
+                  
+                  {/* Top line: 5 TEAM SERVICE */}
+                  <g>
+                    {/* Stylized red "5" - blocky and angular */}
+                    <path
+                      d="M 5 25 L 5 45 L 25 45 L 25 55 L 5 55 L 5 75 L 45 75 L 45 55 L 25 55 L 25 45 L 45 45 L 45 25 Z"
+                      fill="#ad1a20"
+                    />
+                    {/* TEAM SERVICE text */}
+                    <text
+                      x="60"
+                      y="65"
+                      fontSize="28"
+                      fontWeight="bold"
+                      fill="#0b0b0b"
+                      fontFamily="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif"
+                      letterSpacing="-0.5"
+                    >
+                      TEAM SERVICE
+                    </text>
+                  </g>
+                  
+                  {/* Red separator line */}
+                  <line
+                    x1="0"
+                    y1="95"
+                    x2="500"
+                    y2="95"
+                    stroke="#ad1a20"
+                    strokeWidth="2.5"
+                  />
+                  
+                  {/* Bottom line: PROVOLTA with lightning bolt */}
+                  <g>
+                    {/* PRO text */}
+                    <text
+                      x="5"
+                      y="155"
+                      fontSize="42"
+                      fontWeight="bold"
+                      fill="#0b0b0b"
+                      fontFamily="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif"
+                      letterSpacing="-1"
+                    >
+                      PRO
+                    </text>
+                    
+                    {/* Lightning bolt (replaces V) - more dynamic */}
+                    <path
+                      d="M 155 105 L 170 105 L 165 130 L 185 130 L 170 155 L 155 155 L 165 130 L 145 130 Z"
+                      fill="url(#lightningGradient)"
+                    />
+                    
+                    {/* OLTA text - O slightly integrated with lightning */}
+                    <text
+                      x="200"
+                      y="155"
+                      fontSize="42"
+                      fontWeight="bold"
+                      fill="#0b0b0b"
+                      fontFamily="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif"
+                      letterSpacing="-1"
+                    >
+                      OLTA
+                    </text>
+                  </g>
+                </svg>
+                
                 <motion.span
                   className="absolute -inset-2 bg-primary-500/20 blur-2xl -z-10"
                   animate={{
@@ -239,8 +319,8 @@ export default function Hero({ onOpenQuiz }: HeroProps) {
                     ease: 'easeInOut',
                   }}
                 />
-              </span>
-            </motion.h1>
+              </div>
+            </motion.div>
             
             <motion.p
               className="text-base md:text-xl lg:text-2xl text-neutral-800 mb-4 md:mb-8 leading-relaxed text-balance"
