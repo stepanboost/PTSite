@@ -254,8 +254,7 @@ export default function Hero({ onOpenQuiz }: HeroProps) {
                       fontSize="28"
                       fontWeight="bold"
                       fill="#0b0b0b"
-                      fontFamily="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif"
-                      letterSpacing="-0.5"
+                      fontFamily="-apple-system, BlinkMacSystemFont, SF Pro Display, Segoe UI, Roboto, sans-serif"
                     >
                       TEAM SERVICE
                     </text>
@@ -280,8 +279,7 @@ export default function Hero({ onOpenQuiz }: HeroProps) {
                       fontSize="42"
                       fontWeight="bold"
                       fill="#0b0b0b"
-                      fontFamily="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif"
-                      letterSpacing="-1"
+                      fontFamily="-apple-system, BlinkMacSystemFont, SF Pro Display, Segoe UI, Roboto, sans-serif"
                     >
                       PRO
                     </text>
@@ -299,8 +297,7 @@ export default function Hero({ onOpenQuiz }: HeroProps) {
                       fontSize="42"
                       fontWeight="bold"
                       fill="#0b0b0b"
-                      fontFamily="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif"
-                      letterSpacing="-1"
+                      fontFamily="-apple-system, BlinkMacSystemFont, SF Pro Display, Segoe UI, Roboto, sans-serif"
                     >
                       OLTA
                     </text>
