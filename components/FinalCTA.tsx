@@ -14,16 +14,16 @@ export default function FinalCTA({ onOpenQuiz }: FinalCTAProps) {
   const isInView = useInView(ref, { once: true, margin: '-100px' })
 
   return (
-    <section id="final-cta" ref={ref} className="section-padding bg-gradient-to-br from-primary-50 via-white to-primary-50/30 relative overflow-hidden">
+    <section id="final-cta" ref={ref} className="section-padding bg-neutral-100 relative overflow-hidden">
       {/* Enhanced ambient background */}
       <motion.div
         className="absolute inset-0 opacity-20"
         animate={{
           background: [
-            'radial-gradient(circle at 30% 50%, rgba(14, 165, 233, 0.2) 0%, transparent 50%)',
-            'radial-gradient(circle at 70% 50%, rgba(14, 165, 233, 0.25) 0%, transparent 50%)',
-            'radial-gradient(circle at 50% 30%, rgba(14, 165, 233, 0.2) 0%, transparent 50%)',
-            'radial-gradient(circle at 30% 50%, rgba(14, 165, 233, 0.2) 0%, transparent 50%)',
+            'radial-gradient(circle at 30% 50%, rgba(173, 26, 32, 0.08) 0%, transparent 50%)',
+            'radial-gradient(circle at 70% 50%, rgba(173, 26, 32, 0.12) 0%, transparent 50%)',
+            'radial-gradient(circle at 50% 30%, rgba(11, 11, 11, 0.05) 0%, transparent 50%)',
+            'radial-gradient(circle at 30% 50%, rgba(173, 26, 32, 0.08) 0%, transparent 50%)',
           ],
         }}
         transition={{ duration: 15, repeat: Infinity, ease: 'linear' }}
@@ -33,8 +33,9 @@ export default function FinalCTA({ onOpenQuiz }: FinalCTAProps) {
       {[...Array(8)].map((_, i) => (
         <motion.div
           key={i}
-          className="absolute w-2 h-2 md:w-3 md:h-3 rounded-full bg-primary-400/40"
+          className="absolute w-2 h-2 md:w-3 md:h-3 rounded-full"
           style={{
+            backgroundColor: i % 3 === 0 ? 'rgba(173, 26, 32, 0.3)' : 'rgba(11, 11, 11, 0.2)',
             left: `${10 + i * 12}%`,
             top: `${15 + (i % 4) * 25}%`,
           }}
@@ -92,7 +93,7 @@ export default function FinalCTA({ onOpenQuiz }: FinalCTAProps) {
                 transition: { duration: 0.5 }
               }}
             >
-              <Calculator className="w-8 h-8 md:w-10 md:h-10 text-primary-600 relative z-10" />
+              <Calculator className="w-8 h-8 md:w-10 md:h-10 text-primary-500 relative z-10" />
               <motion.div
                 className="absolute inset-0 bg-primary-500/30 rounded-full blur-2xl"
                 animate={{

@@ -43,7 +43,7 @@ export default function Contacts() {
   const isInView = useInView(ref, { once: true, margin: '-100px' })
 
   return (
-    <section id="contacts" ref={ref} className="section-padding bg-white relative">
+    <section id="contacts" ref={ref} className="section-padding bg-neutral-100 relative">
       <div className="container-custom">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -73,7 +73,7 @@ export default function Contacts() {
                 className="glass-card rounded-xl md:rounded-2xl p-4 md:p-6 text-center block"
               >
                 <div className="w-12 h-12 md:w-16 md:h-16 mx-auto mb-3 md:mb-4 rounded-xl md:rounded-2xl bg-primary-500/10 flex items-center justify-center">
-                  <Icon className="w-6 h-6 md:w-8 md:h-8 text-primary-600" />
+                  <Icon className="w-6 h-6 md:w-8 md:h-8 text-primary-500" />
                 </div>
                 <h3 className="text-xs md:text-sm font-semibold text-neutral-900 mb-1 md:mb-2">{contact.title}</h3>
                 <p className="text-xs md:text-sm text-neutral-600">{contact.value}</p>
@@ -90,7 +90,7 @@ export default function Contacts() {
           className="glass-card-strong rounded-2xl md:rounded-3xl p-6 md:p-12 max-w-2xl mx-auto text-center"
         >
           <div className="flex items-center justify-center gap-2 md:gap-3 mb-4 md:mb-6">
-            <MessageCircle className="w-6 h-6 md:w-8 md:h-8 text-primary-600" />
+            <MessageCircle className="w-6 h-6 md:w-8 md:h-8 text-primary-500" />
             <h3 className="text-lg md:text-2xl font-bold text-neutral-900">Мессенджеры</h3>
           </div>
           <p className="text-sm md:text-base text-neutral-600 mb-4 md:mb-6">

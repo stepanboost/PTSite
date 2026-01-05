@@ -22,8 +22,10 @@ export default function Hero({ onOpenQuiz }: HeroProps) {
   })
   
   const springConfig = { damping: 25, stiffness: 200 }
-  const x = useSpring(useTransform(mouseX, [-0.5, 0.5], [-30, 30]), springConfig)
-  const y = useSpring(useTransform(mouseY, [-0.5, 0.5], [-30, 30]), springConfig)
+  const xTransform = useTransform(mouseX, [-0.5, 0.5], [-30, 30])
+  const yTransform = useTransform(mouseY, [-0.5, 0.5], [-30, 30])
+  const x = useSpring(xTransform, springConfig)
+  const y = useSpring(yTransform, springConfig)
   
   // Mobile transforms (must be called unconditionally)
   const xMobile = useTransform(mouseX, [-0.5, 0.5], [-15, 15])
@@ -84,15 +86,15 @@ export default function Hero({ onOpenQuiz }: HeroProps) {
         className="absolute inset-0"
         style={{ y: backgroundY, opacity, rotate }}
       >
-        <div className="absolute inset-0 bg-gradient-to-br from-primary-50 via-white to-primary-50/30" />
+        <div className="absolute inset-0 bg-neutral-100" />
         <motion.div
           className="absolute inset-0"
           animate={{
             background: [
-              'radial-gradient(circle at 20% 50%, rgba(14, 165, 233, 0.2) 0%, transparent 60%)',
-              'radial-gradient(circle at 80% 50%, rgba(14, 165, 233, 0.25) 0%, transparent 60%)',
-              'radial-gradient(circle at 50% 20%, rgba(14, 165, 233, 0.2) 0%, transparent 60%)',
-              'radial-gradient(circle at 20% 50%, rgba(14, 165, 233, 0.2) 0%, transparent 60%)',
+              'radial-gradient(circle at 20% 50%, rgba(173, 26, 32, 0.05) 0%, transparent 60%)',
+              'radial-gradient(circle at 80% 50%, rgba(173, 26, 32, 0.08) 0%, transparent 60%)',
+              'radial-gradient(circle at 50% 20%, rgba(11, 11, 11, 0.03) 0%, transparent 60%)',
+              'radial-gradient(circle at 20% 50%, rgba(173, 26, 32, 0.05) 0%, transparent 60%)',
             ],
           }}
           transition={{ duration: 12, repeat: Infinity, ease: 'linear' }}
@@ -101,7 +103,7 @@ export default function Hero({ onOpenQuiz }: HeroProps) {
         <motion.div
           className="absolute inset-0"
           animate={{
-            opacity: [0.3, 0.6, 0.3],
+            opacity: [0.2, 0.4, 0.2],
             scale: [1, 1.1, 1],
           }}
           transition={{
@@ -110,7 +112,7 @@ export default function Hero({ onOpenQuiz }: HeroProps) {
             ease: 'easeInOut',
           }}
           style={{
-            background: 'radial-gradient(circle at 50% 50%, rgba(14, 165, 233, 0.15) 0%, transparent 70%)',
+            background: 'radial-gradient(circle at 50% 50%, rgba(173, 26, 32, 0.04) 0%, transparent 70%)',
           }}
         />
       </motion.div>
@@ -119,16 +121,17 @@ export default function Hero({ onOpenQuiz }: HeroProps) {
       {[...Array(isMobile ? 12 : 6)].map((_, i) => (
         <motion.div
           key={i}
-          className="absolute w-2 h-2 md:w-3 md:h-3 rounded-full bg-primary-400/40"
+          className="absolute w-2 h-2 md:w-3 md:h-3 rounded-full"
           style={{
             left: `${10 + (i % 6) * 15}%`,
             top: `${15 + Math.floor(i / 6) * 30}%`,
+            backgroundColor: i % 3 === 0 ? 'rgba(173, 26, 32, 0.3)' : 'rgba(11, 11, 11, 0.2)',
           }}
           animate={{
             y: [0, -40, 0],
             x: [0, (Math.random() - 0.5) * 30, 0],
             scale: [1, 1.5, 1],
-            opacity: [0.4, 0.8, 0.4],
+            opacity: [0.3, 0.7, 0.3],
             rotate: [0, 360],
           }}
           transition={{
@@ -144,15 +147,17 @@ export default function Hero({ onOpenQuiz }: HeroProps) {
       {[...Array(3)].map((_, i) => (
         <motion.div
           key={`orb-${i}`}
-          className="absolute w-32 h-32 md:w-64 md:h-64 rounded-full blur-3xl opacity-20"
+          className="absolute w-32 h-32 md:w-64 md:h-64 rounded-full blur-3xl opacity-15"
           style={{
             left: `${20 + i * 30}%`,
             top: `${30 + i * 20}%`,
-            background: `radial-gradient(circle, rgba(14, 165, 233, 0.4), transparent)`,
+            background: i % 2 === 0 
+              ? `radial-gradient(circle, rgba(173, 26, 32, 0.3), transparent)`
+              : `radial-gradient(circle, rgba(11, 11, 11, 0.2), transparent)`,
           }}
           animate={{
             scale: [1, 1.3, 1],
-            opacity: [0.2, 0.4, 0.2],
+            opacity: [0.15, 0.3, 0.15],
             x: [0, 20, 0],
             y: [0, -20, 0],
           }}
@@ -199,7 +204,7 @@ export default function Hero({ onOpenQuiz }: HeroProps) {
             />
             {/* Additional glow effect */}
             <motion.div
-              className="absolute inset-0 bg-gradient-radial from-primary-500/20 via-transparent to-transparent"
+              className="absolute inset-0 bg-gradient-radial from-neutral-900/20 via-transparent to-transparent"
               animate={{
                 scale: [1, 1.3, 1],
                 opacity: [0.4, 0.7, 0.4],
@@ -223,9 +228,9 @@ export default function Hero({ onOpenQuiz }: HeroProps) {
               <span className="relative inline-block">
                 PROVOLTA & TEAM SERVICE
                 <motion.span
-                  className="absolute -inset-2 bg-primary-500/30 blur-2xl -z-10"
+                  className="absolute -inset-2 bg-primary-500/20 blur-2xl -z-10"
                   animate={{
-                    opacity: [0.4, 0.7, 0.4],
+                    opacity: [0.3, 0.5, 0.3],
                     scale: [1, 1.2, 1],
                   }}
                   transition={{
@@ -238,7 +243,7 @@ export default function Hero({ onOpenQuiz }: HeroProps) {
             </motion.h1>
             
             <motion.p
-              className="text-base md:text-xl lg:text-2xl text-neutral-700 mb-4 md:mb-8 leading-relaxed text-balance"
+              className="text-base md:text-xl lg:text-2xl text-neutral-800 mb-4 md:mb-8 leading-relaxed text-balance"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5, duration: 1 }}
@@ -246,7 +251,7 @@ export default function Hero({ onOpenQuiz }: HeroProps) {
               Полный цикл услуг с автомобилем: от покупки до эксплуатации.
               <br className="hidden md:block" />
               <motion.span
-                className="font-semibold text-primary-600 inline-block"
+                className="font-semibold text-primary-500 inline-block"
                 animate={{
                   scale: [1, 1.03, 1],
                 }}
@@ -284,7 +289,7 @@ export default function Hero({ onOpenQuiz }: HeroProps) {
                     whileTap={{ scale: 0.95 }}
                   >
                     <motion.div
-                      className="absolute inset-0 bg-gradient-to-r from-primary-500/10 to-transparent opacity-0 group-hover:opacity-100"
+                      className="absolute inset-0 bg-gradient-to-r from-neutral-900/10 to-transparent opacity-0 group-hover:opacity-100"
                       transition={{ duration: 0.3 }}
                     />
                     <motion.div
@@ -312,20 +317,20 @@ export default function Hero({ onOpenQuiz }: HeroProps) {
                 whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.95 }}
               >
-                <motion.div
-                  className="absolute inset-0 bg-gradient-to-r from-primary-400 to-primary-600"
-                  initial={{ x: '-100%' }}
-                  whileHover={{ x: '100%' }}
-                  transition={{ duration: 0.6 }}
-                />
-                <motion.div
-                  animate={{ rotate: [0, 360] }}
-                  transition={{ duration: 3, repeat: Infinity, ease: 'linear' }}
-                >
-                  <Sparkles className="w-4 h-4 md:w-5 md:h-5 relative z-10" />
-                </motion.div>
-                <span className="relative z-10">Получить расчёт</span>
-                <ArrowRight className="w-4 h-4 md:w-5 md:h-5 group-hover:translate-x-1 transition-transform relative z-10" />
+                    <motion.div
+                      className="absolute inset-0 bg-gradient-to-r from-primary-600 to-primary-700"
+                      initial={{ x: '-100%' }}
+                      whileHover={{ x: '100%' }}
+                      transition={{ duration: 0.6 }}
+                    />
+                    <motion.div
+                      animate={{ rotate: [0, 360] }}
+                      transition={{ duration: 3, repeat: Infinity, ease: 'linear' }}
+                    >
+                      <Sparkles className="w-4 h-4 md:w-5 md:h-5 relative z-10" />
+                    </motion.div>
+                    <span className="relative z-10">Получить расчёт</span>
+                    <ArrowRight className="w-4 h-4 md:w-5 md:h-5 group-hover:translate-x-1 transition-transform relative z-10" />
               </motion.button>
               <motion.button
                 onClick={() => {
@@ -352,12 +357,12 @@ export default function Hero({ onOpenQuiz }: HeroProps) {
         <motion.div
           animate={{ y: [0, 12, 0] }}
           transition={{ duration: 2, repeat: Infinity }}
-          className="w-5 h-8 md:w-6 md:h-10 border-2 border-primary-400/70 rounded-full flex items-start justify-center p-1.5 md:p-2 backdrop-blur-sm bg-white/20 shadow-lg"
+          className="w-5 h-8 md:w-6 md:h-10 border-2 border-neutral-900/30 rounded-full flex items-start justify-center p-1.5 md:p-2 backdrop-blur-sm bg-neutral-100/30 shadow-lg"
         >
           <motion.div
             animate={{ y: [0, 14, 0] }}
             transition={{ duration: 2, repeat: Infinity }}
-            className="w-1 h-2 md:h-3 bg-primary-500 rounded-full"
+            className="w-1 h-2 md:h-3 bg-neutral-900 rounded-full"
           />
         </motion.div>
       </motion.div>

@@ -16,6 +16,7 @@ import Footer from '@/components/Footer'
 import QuizModal from '@/components/QuizModal'
 import StickyCTA from '@/components/StickyCTA'
 import MobileEffects from '@/components/MobileEffects'
+import ContactForm from '@/components/ContactForm'
 
 export default function Home() {
   const [isQuizOpen, setIsQuizOpen] = useState(false)
@@ -28,6 +29,7 @@ export default function Home() {
       <Services />
       <Lifecycle />
       <WhyChoose />
+      <ContactForm />
       <Guarantee />
       <Cases />
       <Process />

@@ -29,3 +29,4 @@
 3. Убедитесь, что плагин Next.js установлен
 4. Попробуйте пересобрать сайт (Trigger deploy → Clear cache and deploy site)
 
+

@@ -37,7 +37,7 @@ export default function StickyCTA({ onOpenQuiz }: StickyCTAProps) {
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-primary-500/10 flex items-center justify-center">
-              <Calculator className="w-5 h-5 text-primary-600" />
+              <Calculator className="w-5 h-5 text-primary-500" />
             </div>
             <div>
               <div className="font-semibold text-neutral-900 text-sm">Получить расчёт</div>
@@ -62,5 +62,6 @@ export default function StickyCTA({ onOpenQuiz }: StickyCTAProps) {
     </motion.div>
   )
 }
+
 
 

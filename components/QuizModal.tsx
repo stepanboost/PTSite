@@ -1,7 +1,7 @@
 'use client'
 
 import { motion, AnimatePresence } from 'framer-motion'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { X, ArrowRight, ArrowLeft, CheckCircle } from 'lucide-react'
 
 interface QuizModalProps {
@@ -21,9 +21,10 @@ interface QuizStep {
     required: boolean
   }>
   condition?: (answers: string[]) => boolean
+  skipIf?: (answers: string[]) => boolean
 }
 
-const quizSteps: QuizStep[] = [
+const allQuizSteps: QuizStep[] = [
   {
     question: 'Какая услуга вас интересует?',
     type: 'select',
@@ -53,6 +54,13 @@ const quizSteps: QuizStep[] = [
     question: 'Какая марка/модель вас интересует?',
     type: 'input',
     placeholder: 'Например: Tesla Model Y, BYD Han...',
+    condition: (answers: string[]) => {
+      const firstAnswer = answers[0]
+      return firstAnswer?.includes('Импорт') || 
+             firstAnswer?.includes('Русификация') || 
+             firstAnswer?.includes('Доработки') ||
+             firstAnswer?.includes('Несколько')
+    },
   },
   {
     question: 'Какой у вас бюджет?',
@@ -64,6 +72,10 @@ const quizSteps: QuizStep[] = [
       'Свыше 10 млн руб.',
       'Нужна консультация',
     ],
+    skipIf: (answers: string[]) => {
+      // Пропускаем вопрос о бюджете для ТО и ремонта
+      return answers[0]?.includes('ТО и ремонт')
+    },
   },
   {
     question: 'Какие сроки важны для вас?',
@@ -92,33 +104,54 @@ export default function QuizModal({ isOpen, onClose }: QuizModalProps) {
   const [answers, setAnswers] = useState<string[]>([])
   const [contactData, setContactData] = useState({
     name: '',
-    phone: '',
+    phone: '+7 ',
     email: '',
     comment: '',
   })
   const [isSubmitted, setIsSubmitted] = useState(false)
 
-  const currentQuestion = quizSteps[currentStep]
-  const shouldSkipStep = currentQuestion.condition && !currentQuestion.condition(answers)
-  const isLastStep = currentStep === quizSteps.length - 1
-
-  // Auto-skip steps that don't meet conditions
-  useEffect(() => {
-    if (shouldSkipStep && currentStep < quizSteps.length - 1) {
-      setCurrentStep(currentStep + 1)
+  // Фильтруем шаги на основе условий
+  const visibleSteps = useMemo(() => {
+    const steps: QuizStep[] = []
+    const tempAnswers: string[] = []
+    
+    for (const step of allQuizSteps) {
+      // Проверяем условие показа шага
+      if (step.condition && !step.condition(tempAnswers)) {
+        continue
+      }
+      
+      // Проверяем условие пропуска шага
+      if (step.skipIf && step.skipIf(tempAnswers)) {
+        continue
+      }
+      
+      steps.push(step)
+      
+      // Если это не последний шаг, добавляем ответ в tempAnswers для проверки следующих шагов
+      if (step.type !== 'contact') {
+        const answerIndex = allQuizSteps.indexOf(step)
+        if (answers[answerIndex] !== undefined) {
+          tempAnswers.push(answers[answerIndex])
+        }
+      }
     }
-  }, [currentStep, shouldSkipStep])
+    
+    return steps
+  }, [answers])
+
+  const currentQuestion = visibleSteps[currentStep]
+  const isLastStep = currentStep === visibleSteps.length - 1
+  const totalSteps = visibleSteps.length
+
+  // Синхронизируем currentStep с видимыми шагами
+  useEffect(() => {
+    if (currentStep >= visibleSteps.length && visibleSteps.length > 0) {
+      setCurrentStep(visibleSteps.length - 1)
+    }
+  }, [visibleSteps.length, currentStep])
 
   const handleNext = () => {
-    if (shouldSkipStep) {
-      // Skip this step and go to next
-      if (currentStep < quizSteps.length - 1) {
-        setCurrentStep(currentStep + 1)
-      } else {
-        handleSubmit()
-      }
-      return
-    }
     if (isLastStep) {
       handleSubmit()
     } else {
@@ -129,15 +162,48 @@ export default function QuizModal({ isOpen, onClose }: QuizModalProps) {
   const handleBack = () => {
     if (currentStep > 0) {
       setCurrentStep(currentStep - 1)
-      setAnswers(answers.slice(0, -1))
+      // Удаляем последний ответ при возврате назад
+      const lastAnswerIndex = allQuizSteps.findIndex((step, index) => {
+        if (step === visibleSteps[currentStep - 1]) {
+          return true
+        }
+        return false
+      })
+      if (lastAnswerIndex >= 0 && answers[lastAnswerIndex] !== undefined) {
+        const newAnswers = [...answers]
+        newAnswers[lastAnswerIndex] = ''
+        setAnswers(newAnswers)
+      }
     }
   }
 
   const handleSelect = (value: string) => {
-    const newAnswers = [...answers]
-    newAnswers[currentStep] = value
-    setAnswers(newAnswers)
+    // Находим индекс шага в оригинальном массиве
+    const originalIndex = allQuizSteps.findIndex(step => step === currentQuestion)
+    if (originalIndex >= 0) {
+      const newAnswers = [...answers]
+      newAnswers[originalIndex] = value
+      setAnswers(newAnswers)
+    }
     setTimeout(() => handleNext(), 300)
+  }
+
+  const handleInputChange = (value: string) => {
+    const originalIndex = allQuizSteps.findIndex(step => step === currentQuestion)
+    if (originalIndex >= 0) {
+      const newAnswers = [...answers]
+      newAnswers[originalIndex] = value
+      setAnswers(newAnswers)
+    }
+  }
+
+  const handlePhoneChange = (value: string) => {
+    // Автоматически добавляем +7 если его нет
+    let formattedValue = value
+    if (!formattedValue.startsWith('+7')) {
+      formattedValue = '+7 ' + formattedValue.replace(/^\+7\s?/, '')
+    }
+    setContactData({ ...contactData, phone: formattedValue })
   }
 
   const handleSubmit = () => {
@@ -149,7 +215,7 @@ export default function QuizModal({ isOpen, onClose }: QuizModalProps) {
       onClose()
       setCurrentStep(0)
       setAnswers([])
-      setContactData({ name: '', phone: '', email: '', comment: '' })
+      setContactData({ name: '', phone: '+7 ', email: '', comment: '' })
       setIsSubmitted(false)
     }, 2000)
   }
@@ -188,22 +254,22 @@ export default function QuizModal({ isOpen, onClose }: QuizModalProps) {
           ) : (
             <>
               <div className="flex items-center justify-between mb-6">
-                <div>
+                <div className="flex-1">
                   <div className="text-sm text-neutral-600 mb-1">
-                    Шаг {currentStep + 1} из {quizSteps.length}
+                    Шаг {currentStep + 1} из {totalSteps}
                   </div>
                   <div className="w-full h-2 bg-neutral-200 rounded-full overflow-hidden">
                     <motion.div
                       className="h-full bg-primary-500 rounded-full"
                       initial={{ width: 0 }}
-                      animate={{ width: `${((currentStep + 1) / quizSteps.length) * 100}%` }}
+                      animate={{ width: `${((currentStep + 1) / totalSteps) * 100}%` }}
                       transition={{ duration: 0.3 }}
                     />
                   </div>
                 </div>
                 <button
                   onClick={onClose}
-                  className="w-10 h-10 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center transition-colors"
+                  className="w-10 h-10 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center transition-colors ml-4"
                 >
                   <X className="w-5 h-5 text-neutral-600" />
                 </button>
@@ -228,7 +294,7 @@ export default function QuizModal({ isOpen, onClose }: QuizModalProps) {
                         onClick={() => handleSelect(option)}
                         whileHover={{ scale: 1.02, x: 4 }}
                         whileTap={{ scale: 0.98 }}
-                        className="w-full glass-card rounded-2xl p-4 text-left hover:bg-white/80 transition-colors"
+                        className="w-full glass-card rounded-2xl p-4 text-left hover:bg-neutral-100/80 transition-colors"
                       >
                         {option}
                       </motion.button>
@@ -240,12 +306,8 @@ export default function QuizModal({ isOpen, onClose }: QuizModalProps) {
                   <input
                     type="text"
                     placeholder={currentQuestion.placeholder}
-                    value={answers[currentStep] || ''}
-                    onChange={(e) => {
-                      const newAnswers = [...answers]
-                      newAnswers[currentStep] = e.target.value
-                      setAnswers(newAnswers)
-                    }}
+                    value={answers[allQuizSteps.findIndex(s => s === currentQuestion)] || ''}
+                    onChange={(e) => handleInputChange(e.target.value)}
                     className="w-full glass-card rounded-2xl p-4 text-neutral-900 placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-primary-500"
                   />
                 )}
@@ -267,6 +329,15 @@ export default function QuizModal({ isOpen, onClose }: QuizModalProps) {
                             rows={4}
                             className="w-full glass-card rounded-2xl p-4 text-neutral-900 placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-primary-500 resize-none"
                             placeholder={field.label}
+                          />
+                        ) : field.type === 'tel' ? (
+                          <input
+                            type="tel"
+                            value={contactData.phone}
+                            onChange={(e) => handlePhoneChange(e.target.value)}
+                            required={field.required}
+                            className="w-full glass-card rounded-2xl p-4 text-neutral-900 placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-primary-500"
+                            placeholder="+7 (XXX) XXX-XX-XX"
                           />
                         ) : (
                           <input
@@ -301,7 +372,7 @@ export default function QuizModal({ isOpen, onClose }: QuizModalProps) {
                     onClick={handleNext}
                     disabled={
                       currentQuestion.type === 'contact' &&
-                      (!contactData.name || !contactData.phone)
+                      (!contactData.name || !contactData.phone || contactData.phone === '+7 ')
                     }
                     className="btn-primary flex items-center gap-2 ml-auto disabled:opacity-50 disabled:cursor-not-allowed"
                   >
@@ -317,4 +388,3 @@ export default function QuizModal({ isOpen, onClose }: QuizModalProps) {
     </AnimatePresence>
   )
 }
-

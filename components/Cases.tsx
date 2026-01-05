@@ -49,7 +49,7 @@ export default function Cases() {
   const isInView = useInView(ref, { once: true, margin: '-100px' })
 
   return (
-    <section ref={ref} className="section-padding bg-gradient-to-b from-white to-neutral-50 relative">
+    <section ref={ref} className="section-padding bg-neutral-100 relative">
       <div className="container-custom">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -89,7 +89,7 @@ export default function Cases() {
             >
               {/* Animated gradient */}
               <motion.div
-                className="absolute inset-0 bg-gradient-to-br from-primary-500/10 via-primary-500/5 to-transparent opacity-0 group-hover:opacity-100"
+                className="absolute inset-0 bg-gradient-to-br from-neutral-900/10 via-primary-500/5 to-transparent opacity-0 group-hover:opacity-100"
                 transition={{ duration: 0.3 }}
               />
               {/* Shimmer */}
@@ -101,15 +101,21 @@ export default function Cases() {
               />
               
               <div className="relative z-10">
+                {/* Image placeholder */}
+                <div className="w-full h-48 md:h-64 mb-4 md:mb-6 rounded-xl md:rounded-2xl bg-gradient-to-br from-neutral-200 to-neutral-300 flex items-center justify-center overflow-hidden relative">
+                  <Car className="w-16 h-16 md:w-24 md:h-24 text-neutral-400" />
+                  <div className="absolute inset-0 bg-primary-500/5 opacity-0 group-hover:opacity-100 transition-opacity" />
+                </div>
+                
                 <div className="flex items-start justify-between mb-3 md:mb-4">
-                  <h3 className="text-lg md:text-xl font-bold text-neutral-900 flex-1 group-hover:text-primary-600 transition-colors">
+                  <h3 className="text-lg md:text-xl font-bold text-neutral-900 flex-1 group-hover:text-primary-500 transition-colors">
                     {caseItem.title}
                   </h3>
                   <motion.div
                     whileHover={{ rotate: [0, -15, 15, 0], scale: 1.2 }}
                     transition={{ duration: 0.5 }}
                   >
-                    <Car className="w-5 h-5 md:w-6 md:h-6 text-primary-600 flex-shrink-0 ml-3 md:ml-4" />
+                    <Car className="w-5 h-5 md:w-6 md:h-6 text-primary-500 flex-shrink-0 ml-3 md:ml-4" />
                   </motion.div>
                 </div>
                 
@@ -147,7 +153,7 @@ export default function Cases() {
                 {caseItem.services.map((service, i) => (
                   <span
                     key={i}
-                    className="px-2 py-0.5 md:px-3 md:py-1 rounded-full bg-primary-500/10 text-primary-600 text-xs font-medium"
+                    className="px-2 py-0.5 md:px-3 md:py-1 rounded-full bg-primary-500/10 text-primary-500 text-xs font-medium"
                   >
                     {service}
                   </span>

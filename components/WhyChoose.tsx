@@ -49,13 +49,13 @@ export default function WhyChoose() {
   const backgroundY = useTransform(scrollYProgress, [0, 1], ['0%', '30%'])
 
   return (
-    <section ref={ref} className="section-padding bg-gradient-to-b from-neutral-50 to-white relative overflow-hidden">
+    <section ref={ref} className="section-padding bg-neutral-100 relative overflow-hidden">
       {/* Parallax background */}
       <motion.div
         className="absolute inset-0 opacity-30"
         style={{ y: backgroundY }}
       >
-        <div className="absolute inset-0 bg-gradient-to-br from-primary-100/50 via-transparent to-primary-100/50" />
+        <div className="absolute inset-0 bg-gradient-to-br from-primary-500/5 via-transparent to-primary-500/5" />
       </motion.div>
 
       <div className="container-custom relative z-10">
@@ -124,7 +124,7 @@ export default function WhyChoose() {
                     }}
                     transition={{ duration: 0.5 }}
                   >
-                    <Icon className="w-6 h-6 md:w-8 md:h-8 text-primary-600 relative z-10" />
+                    <Icon className="w-6 h-6 md:w-8 md:h-8 text-primary-500 relative z-10" />
                     <motion.div
                       className="absolute inset-0 bg-primary-500/30 rounded-xl md:rounded-2xl blur-xl"
                       animate={{
@@ -138,7 +138,7 @@ export default function WhyChoose() {
                       }}
                     />
                   </motion.div>
-                  <h3 className="text-lg md:text-xl font-bold text-neutral-900 mb-2 md:mb-3 group-hover:text-primary-600 transition-colors">
+                  <h3 className="text-lg md:text-xl font-bold text-neutral-900 mb-2 md:mb-3 group-hover:text-primary-500 transition-colors">
                     {reason.title}
                   </h3>
                   <p className="text-sm md:text-base text-neutral-600 leading-relaxed">{reason.description}</p>

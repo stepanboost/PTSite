@@ -9,42 +9,48 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // iOS 26 Light inspired palette
+        // Новая цветовая палитра
         primary: {
-          50: '#f0f9ff',
-          100: '#e0f2fe',
-          200: '#bae6fd',
-          300: '#7dd3fc',
-          400: '#38bdf8',
-          500: '#0ea5e9', // Electric blue
-          600: '#0284c7',
-          700: '#0369a1',
-          800: '#075985',
-          900: '#0c4a6e',
+          50: '#fee2e2',
+          100: '#fecaca',
+          200: '#fca5a5',
+          300: '#f87171',
+          400: '#ef4444',
+          500: '#ad1a20', // Deep Energy Red - основной акцент
+          600: '#99151a',
+          700: '#851015',
+          800: '#700b10',
+          900: '#5c080b',
         },
         neutral: {
-          50: '#fafafa',
-          100: '#f5f5f5',
-          200: '#e5e5e5',
+          50: '#f5f5f5',
+          100: '#ebebeb', // Pure White - основной фон
+          200: '#e0e0e0',
           300: '#d4d4d4',
           400: '#a3a3a3',
           500: '#737373',
           600: '#525252',
           700: '#404040',
           800: '#262626',
-          900: '#171717',
+          900: '#0b0b0b', // Graphite Black - чёрный акцент
         },
         graphite: {
-          50: '#f8f9fa',
-          100: '#f1f3f5',
-          200: '#e9ecef',
-          300: '#dee2e6',
-          400: '#ced4da',
-          500: '#adb5bd',
-          600: '#868e96',
-          700: '#495057',
-          800: '#343a40',
-          900: '#212529',
+          DEFAULT: '#0b0b0b', // Graphite Black
+          50: '#f5f5f5',
+          100: '#ebebeb',
+          200: '#e0e0e0',
+          300: '#d4d4d4',
+          400: '#a3a3a3',
+          500: '#737373',
+          600: '#525252',
+          700: '#404040',
+          800: '#262626',
+          900: '#0b0b0b',
+        },
+        accent: {
+          red: '#ad1a20', // Deep Energy Red
+          black: '#0b0b0b', // Graphite Black
+          white: '#ebebeb', // Pure White
         },
       },
       borderRadius: {
@@ -58,11 +64,13 @@ const config: Config = {
         'glass-strong': '40px',
       },
       boxShadow: {
-        'soft': '0 2px 8px rgba(0, 0, 0, 0.04)',
-        'medium': '0 4px 16px rgba(0, 0, 0, 0.08)',
-        'strong': '0 8px 32px rgba(0, 0, 0, 0.12)',
-        'glass': '0 8px 32px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.6)',
-        'glass-strong': '0 16px 64px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.7)',
+        'soft': '0 2px 8px rgba(11, 11, 11, 0.04)',
+        'medium': '0 4px 16px rgba(11, 11, 11, 0.08)',
+        'strong': '0 8px 32px rgba(11, 11, 11, 0.12)',
+        'glass': '0 8px 32px rgba(11, 11, 11, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.6)',
+        'glass-strong': '0 16px 64px rgba(11, 11, 11, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.7)',
+        'red-glow': '0 0 20px rgba(173, 26, 32, 0.3)',
+        'black-glow': '0 0 20px rgba(11, 11, 11, 0.2)',
       },
       spacing: {
         '18': '4.5rem',
@@ -105,4 +113,3 @@ const config: Config = {
 }
 
 export default config
-

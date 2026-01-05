@@ -9,7 +9,7 @@ export default function Footer() {
   const isInView = useInView(ref, { once: true, margin: '-100px' })
 
   return (
-    <footer ref={ref} className="bg-neutral-900 text-neutral-300 py-8 md:py-12">
+    <footer ref={ref} className="bg-neutral-900 text-neutral-200 py-8 md:py-12">
       <div className="container-custom px-4 md:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

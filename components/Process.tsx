@@ -9,7 +9,7 @@ const steps = [
   {
     icon: MessageSquare,
     title: 'Консультация',
-    description: 'Связываетесь с нами, мы узнаём ваши потребности и цели',
+    description: 'Связываетесь с нами, мы узнаём ваши пожелания и цели',
   },
   {
     icon: FileText,
@@ -48,7 +48,7 @@ export default function Process() {
   const isInView = useInView(ref, { once: true, margin: '-100px' })
 
   return (
-    <section ref={ref} className="section-padding bg-white relative overflow-hidden">
+    <section ref={ref} className="section-padding bg-neutral-100 relative overflow-hidden">
       <div className="container-custom">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -101,7 +101,7 @@ export default function Process() {
                   <div className="glass-card rounded-xl md:rounded-2xl p-4 md:p-6 text-center h-full relative overflow-hidden group">
                     {/* Animated background */}
                     <motion.div
-                      className="absolute inset-0 bg-gradient-to-br from-primary-500/10 to-transparent opacity-0 group-hover:opacity-100"
+                      className="absolute inset-0 bg-gradient-to-br from-neutral-900/10 to-transparent opacity-0 group-hover:opacity-100"
                       transition={{ duration: 0.3 }}
                     />
                     {/* Shimmer */}
@@ -121,7 +121,7 @@ export default function Process() {
                         }}
                         transition={{ duration: 0.5 }}
                       >
-                        <Icon className="w-6 h-6 md:w-8 md:h-8 text-primary-600 relative z-10" />
+                        <Icon className="w-6 h-6 md:w-8 md:h-8 text-primary-500 relative z-10" />
                         <motion.div
                           className="absolute inset-0 bg-primary-500/30 rounded-xl md:rounded-2xl blur-xl"
                           animate={{
@@ -143,7 +143,7 @@ export default function Process() {
                         {index + 1}
                       </motion.div>
                     </div>
-                    <h3 className="text-sm md:text-base font-bold text-neutral-900 mb-1 md:mb-2 group-hover:text-primary-600 transition-colors relative z-10">
+                    <h3 className="text-sm md:text-base font-bold text-neutral-900 mb-1 md:mb-2 group-hover:text-primary-500 transition-colors relative z-10">
                       {step.title}
                     </h3>
                     <p className="text-xs md:text-sm text-neutral-600 relative z-10">{step.description}</p>

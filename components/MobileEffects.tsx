@@ -37,3 +37,4 @@ export default function MobileEffects() {
   return null
 }
 
+

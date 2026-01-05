@@ -4,7 +4,7 @@
 
 @layer base {
   * {
-    @apply border-neutral-200;
+    @apply border-neutral-300;
   }
   
   html {
@@ -12,7 +12,7 @@
   }
   
   body {
-    @apply bg-neutral-50 text-neutral-900;
+    @apply bg-neutral-100 text-neutral-900;
     font-feature-settings: 'kern' 1, 'liga' 1;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -32,11 +32,11 @@
 
 @layer components {
   .glass-card {
-    @apply bg-white/70 backdrop-blur-glass border border-white/50 shadow-glass;
+    @apply bg-white/80 backdrop-blur-glass border border-neutral-200/50 shadow-glass;
   }
   
   .glass-card-strong {
-    @apply bg-white/80 backdrop-blur-glass-strong border border-white/60 shadow-glass-strong;
+    @apply bg-white/90 backdrop-blur-glass-strong border border-neutral-200/60 shadow-glass-strong;
   }
   
   .btn-primary {
@@ -48,10 +48,10 @@
   }
   
   .btn-secondary {
-    @apply px-4 py-2.5 md:px-8 md:py-4 bg-white/80 backdrop-blur-glass text-primary-600 border border-primary-200
-           rounded-xl md:rounded-2xl text-sm md:text-base font-medium shadow-soft hover:shadow-medium hover:bg-white
+    @apply px-4 py-2.5 md:px-8 md:py-4 bg-white/90 backdrop-blur-glass text-neutral-900 border-2 border-neutral-900
+           rounded-xl md:rounded-2xl text-sm md:text-base font-medium shadow-soft hover:shadow-medium hover:bg-neutral-900 hover:text-white
            active:scale-[0.98] transition-all duration-200
-           focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2;
+           focus:outline-none focus:ring-2 focus:ring-neutral-900 focus:ring-offset-2;
   }
   
   .section-padding {

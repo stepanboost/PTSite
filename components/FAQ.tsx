@@ -43,7 +43,7 @@ export default function FAQ() {
   const [openIndex, setOpenIndex] = useState<number | null>(null)
 
   return (
-    <section className="section-padding bg-gradient-to-b from-neutral-50 to-white relative">
+    <section className="section-padding bg-neutral-100 relative">
       <div className="container-custom">
         <motion.div
           initial={{ opacity: 0, y: 30 }}

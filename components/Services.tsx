@@ -78,7 +78,7 @@ export default function Services() {
     : services.filter(s => s.category === selectedCategory)
 
   return (
-    <section id="services" ref={ref} className="section-padding bg-gradient-to-b from-white to-neutral-50 relative">
+    <section id="services" ref={ref} className="section-padding bg-neutral-100 relative">
       <div className="container-custom">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -108,7 +108,7 @@ export default function Services() {
               className={`px-4 py-2 md:px-6 md:py-3 rounded-xl md:rounded-2xl text-sm md:text-base font-medium transition-all duration-200 ${
                 selectedCategory === category
                   ? 'bg-primary-500 text-white shadow-medium'
-                  : 'bg-white/80 backdrop-blur-glass text-neutral-700 hover:bg-white shadow-soft'
+                  : 'bg-neutral-100/80 backdrop-blur-glass text-neutral-700 hover:bg-neutral-100 shadow-soft'
               }`}
             >
               {category}
@@ -144,7 +144,7 @@ export default function Services() {
               >
                 {/* Animated gradient background */}
                 <motion.div
-                  className="absolute inset-0 bg-gradient-to-br from-primary-500/10 via-primary-500/5 to-transparent"
+                  className="absolute inset-0 bg-gradient-to-br from-neutral-900/10 via-primary-500/5 to-transparent"
                   initial={{ opacity: 0 }}
                   whileHover={{ opacity: 1 }}
                   transition={{ duration: 0.3 }}
@@ -165,7 +165,7 @@ export default function Services() {
                     }}
                     transition={{ duration: 0.5 }}
                   >
-                    <Icon className="w-6 h-6 md:w-8 md:h-8 text-primary-600 relative z-10" />
+                    <Icon className="w-6 h-6 md:w-8 md:h-8 text-primary-500 relative z-10" />
                     <motion.div
                       className="absolute inset-0 bg-primary-500/20 rounded-xl md:rounded-2xl blur-xl"
                       animate={{
@@ -179,12 +179,12 @@ export default function Services() {
                       }}
                     />
                   </motion.div>
-                  <h3 className="text-lg md:text-xl font-bold text-neutral-900 mb-2 md:mb-3 group-hover:text-primary-600 transition-colors">
+                  <h3 className="text-lg md:text-xl font-bold text-neutral-900 mb-2 md:mb-3 group-hover:text-primary-500 transition-colors">
                     {service.title}
                   </h3>
                   <p className="text-sm md:text-base text-neutral-600 mb-3 md:mb-4">{service.description}</p>
                   <motion.div
-                    className="flex items-center text-primary-600 font-medium text-sm md:text-base"
+                    className="flex items-center text-primary-500 font-medium text-sm md:text-base"
                     whileHover={{ x: 4 }}
                   >
                     <span>Подробнее</span>
@@ -228,11 +228,11 @@ export default function Services() {
                   <div className="flex items-start justify-between mb-6">
                     <div className="flex items-center gap-4">
                       <div className="w-16 h-16 rounded-2xl bg-primary-500/10 flex items-center justify-center">
-                        <Icon className="w-8 h-8 text-primary-600" />
+                        <Icon className="w-8 h-8 text-primary-500" />
                       </div>
                       <div>
                         <h3 className="text-2xl font-bold text-neutral-900 mb-2">{service.title}</h3>
-                        <span className="text-sm text-primary-600 font-medium">{service.category}</span>
+                        <span className="text-sm text-primary-500 font-medium">{service.category}</span>
                       </div>
                     </div>
                     <button
