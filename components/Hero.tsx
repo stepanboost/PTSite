@@ -1,6 +1,6 @@
 'use client'
 
-import { motion, useMotionValue, useSpring, useTransform, useScroll, useMotionValueEvent } from 'framer-motion'
+import { motion, useMotionValue, useSpring, useTransform, useScroll } from 'framer-motion'
 import { useEffect, useRef, useState } from 'react'
 import { ArrowRight, Shield, Clock, CheckCircle2, Sparkles } from 'lucide-react'
 
