@@ -20,6 +20,7 @@ export default function RootLayout({
   return (
     <html lang="ru" className="scroll-smooth">
       <head>
+        <link rel="icon" href="/logo.png" type="image/png" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{

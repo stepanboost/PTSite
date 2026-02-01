@@ -1,8 +1,8 @@
 'use client'
 
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { useInView } from 'framer-motion'
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import { Shield, CheckCircle, Clock, FileCheck } from 'lucide-react'
 
 const guarantees = [
@@ -10,27 +10,40 @@ const guarantees = [
     icon: Shield,
     title: 'Гарантия на автомобиль',
     description: 'Полная гарантия на все приобретённые автомобили',
+    details: 'Мы предоставляем расширенную гарантию на все автомобили, которые помогаем приобрести. Покрытие включает основные узлы и агрегаты.',
   },
   {
     icon: FileCheck,
     title: 'Гарантия на работы',
     description: 'Гарантия на все выполненные работы и установленное оборудование',
+    details: 'Все работы, которые мы выполняем, сопровождаются официальной гарантией. При возникновении проблем устраняем их бесплатно.',
   },
   {
     icon: Clock,
     title: 'Долгосрочная поддержка',
     description: 'Мы всегда на связи для решения любых вопросов',
+    details: 'Наша команда остаётся на связи 24/7. Вы можете обратиться к нам с любым вопросом в любое время.',
   },
   {
     icon: CheckCircle,
     title: 'Прозрачные условия',
     description: 'Чёткие условия гарантии, без скрытых пунктов',
+    details: 'Все условия гарантии прописаны в договоре простым языком. Никаких скрытых условий или мелкого шрифта.',
   },
 ]
 
 export default function Guarantee() {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
+  const [flippedCards, setFlippedCards] = useState<number[]>([])
+
+  const toggleCard = (index: number) => {
+    setFlippedCards(prev =>
+      prev.includes(index)
+        ? prev.filter(i => i !== index)
+        : [...prev, index]
+    )
+  }
 
   return (
     <section ref={ref} className="section-padding bg-neutral-100 relative overflow-hidden">
@@ -81,7 +94,61 @@ export default function Guarantee() {
           </div>
         </motion.div>
 
-        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6">
+        {/* Mobile: flip cards */}
+        <div className="md:hidden grid grid-cols-2 gap-3">
+          {guarantees.map((guarantee, index) => {
+            const Icon = guarantee.icon
+            const isFlipped = flippedCards.includes(index)
+            
+            return (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 30 }}
+                animate={isInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ delay: 0.4 + index * 0.1, duration: 0.6 }}
+                className="h-48 cursor-pointer touch-interactive"
+                style={{ perspective: '1000px' }}
+                onClick={() => toggleCard(index)}
+              >
+                <motion.div
+                  className="relative w-full h-full"
+                  animate={{ rotateY: isFlipped ? 180 : 0 }}
+                  transition={{ duration: 0.6, type: 'spring', stiffness: 100 }}
+                  style={{ transformStyle: 'preserve-3d' }}
+                >
+                  {/* Front */}
+                  <div
+                    className="absolute inset-0 glass-card rounded-xl p-4 text-center flex flex-col items-center justify-center"
+                    style={{ backfaceVisibility: 'hidden' }}
+                  >
+                    <div className="w-12 h-12 mx-auto mb-3 rounded-xl bg-primary-500/10 flex items-center justify-center">
+                      <Icon className="w-6 h-6 text-primary-500" />
+                    </div>
+                    <h3 className="text-sm font-bold text-neutral-900 mb-2">{guarantee.title}</h3>
+                    <p className="text-xs text-neutral-400">Тапните для подробностей</p>
+                  </div>
+                  
+                  {/* Back */}
+                  <div
+                    className="absolute inset-0 bg-primary-500 rounded-xl p-4 flex flex-col items-center justify-center text-white shadow-strong"
+                    style={{ 
+                      backfaceVisibility: 'hidden',
+                      transform: 'rotateY(180deg)'
+                    }}
+                  >
+                    <Icon className="w-8 h-8 mb-3 opacity-80" />
+                    <p className="text-xs leading-relaxed text-center">
+                      {guarantee.details}
+                    </p>
+                  </div>
+                </motion.div>
+              </motion.div>
+            )
+          })}
+        </div>
+
+        {/* Desktop: regular cards */}
+        <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6">
           {guarantees.map((guarantee, index) => {
             const Icon = guarantee.icon
             return (
@@ -90,13 +157,17 @@ export default function Guarantee() {
                 initial={{ opacity: 0, y: 30 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ delay: 0.4 + index * 0.1, duration: 0.6 }}
-                className="glass-card rounded-xl md:rounded-2xl p-4 md:p-6 text-center"
+                whileHover={{ y: -6 }}
+                className="glass-card rounded-xl md:rounded-2xl p-4 md:p-6 text-center relative overflow-hidden group"
               >
-                <div className="w-12 h-12 md:w-16 md:h-16 mx-auto mb-3 md:mb-4 rounded-xl md:rounded-2xl bg-primary-500/10 flex items-center justify-center">
-                  <Icon className="w-6 h-6 md:w-8 md:h-8 text-primary-500" />
+                <div className="absolute inset-0 bg-gradient-to-br from-primary-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                <div className="relative z-10">
+                  <div className="w-12 h-12 md:w-16 md:h-16 mx-auto mb-3 md:mb-4 rounded-xl md:rounded-2xl bg-primary-500/10 flex items-center justify-center">
+                    <Icon className="w-6 h-6 md:w-8 md:h-8 text-primary-500" />
+                  </div>
+                  <h3 className="text-sm md:text-base font-bold text-neutral-900 mb-1 md:mb-2">{guarantee.title}</h3>
+                  <p className="text-xs md:text-sm text-neutral-600">{guarantee.description}</p>
                 </div>
-                <h3 className="text-sm md:text-base font-bold text-neutral-900 mb-1 md:mb-2">{guarantee.title}</h3>
-                <p className="text-xs md:text-sm text-neutral-600">{guarantee.description}</p>
               </motion.div>
             )
           })}

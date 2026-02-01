@@ -51,6 +51,7 @@ export default function Lifecycle() {
   })
 
   const progress = useTransform(scrollYProgress, [0, 1], [0, 100])
+  const heightPercent = useTransform(progress, (p) => `${p}%`)
 
   return (
     <section ref={ref} className="section-padding bg-neutral-100 relative overflow-hidden">
@@ -71,15 +72,15 @@ export default function Lifecycle() {
         </motion.div>
 
         <div className="relative">
-          {/* Timeline line */}
-          <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-1 bg-neutral-200 -translate-x-1/2" />
+          {/* Timeline line — на мобильном слева вертикальная линия */}
+          <div className="absolute left-[19px] md:left-1/2 top-0 bottom-0 w-0.5 md:w-1 bg-neutral-300 md:bg-neutral-200 -translate-x-1/2" />
           <motion.div
-            className="hidden md:block absolute left-1/2 top-0 w-1 bg-primary-500 -translate-x-1/2 origin-top"
-            style={{ height: useTransform(progress, (p) => `${p}%`) }}
+            className="absolute left-[19px] md:left-1/2 top-0 w-0.5 md:w-1 bg-primary-500 -translate-x-1/2 origin-top"
+            style={{ height: heightPercent }}
           />
 
           {/* Steps */}
-          <div className="space-y-6 md:space-y-12 lg:space-y-24">
+          <div className="space-y-4 md:space-y-12 lg:space-y-24">
             {steps.map((step, index) => {
               const Icon = step.icon
               const isEven = index % 2 === 0
@@ -87,39 +88,51 @@ export default function Lifecycle() {
               return (
                 <motion.div
                   key={index}
-                  initial={{ opacity: 0, x: isEven ? -50 : 50 }}
+                  initial={{ opacity: 0, x: isEven ? -30 : 30 }}
                   whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true, margin: '-100px' }}
-                  transition={{ delay: index * 0.1, duration: 0.6 }}
-                  className={`flex flex-col md:flex-row items-center gap-4 md:gap-8 ${
+                  viewport={{ once: true, margin: '-80px' }}
+                  transition={{ delay: index * 0.08, duration: 0.5 }}
+                  className={`flex flex-col md:flex-row items-stretch md:items-center gap-3 md:gap-8 pl-12 md:pl-0 ${
                     isEven ? 'md:flex-row-reverse' : ''
                   }`}
                 >
-                  {/* Content */}
-                  <div className={`flex-1 ${isEven ? 'md:text-right' : ''}`}>
+                  {/* Точка таймлайна на мобильном */}
+                  <div className="absolute left-0 top-6 w-10 h-10 flex items-center justify-center md:hidden z-10">
                     <motion.div
-                      className="glass-card rounded-xl md:rounded-2xl p-5 md:p-8 inline-block w-full md:w-auto relative overflow-hidden group"
-                      whileHover={{ y: -8, scale: 1.03, rotateY: isEven ? -5 : 5 }}
-                      transition={{ type: 'spring', stiffness: 300 }}
-                      style={{ transformStyle: 'preserve-3d' }}
+                      className="w-10 h-10 rounded-full bg-white border-3 border-primary-500 flex items-center justify-center shadow-strong relative"
+                      whileInView={{ scale: [0.8, 1.1, 1] }}
+                      viewport={{ once: true }}
+                      transition={{ delay: index * 0.1, duration: 0.4 }}
                     >
-                      {/* Animated background */}
+                      <Icon className="w-5 h-5 text-primary-500 relative z-10" />
                       <motion.div
-                        className="absolute inset-0 bg-gradient-to-br from-neutral-900/10 to-transparent opacity-0 group-hover:opacity-100"
-                        transition={{ duration: 0.3 }}
+                        className="absolute inset-0 bg-primary-500/30 rounded-full blur-lg"
+                        animate={{
+                          scale: [1, 1.5, 1],
+                          opacity: [0.5, 0.8, 0.5],
+                        }}
+                        transition={{
+                          duration: 2,
+                          repeat: Infinity,
+                          ease: 'easeInOut',
+                          delay: index * 0.3,
+                        }}
                       />
-                      {/* Shimmer */}
-                      <motion.div
-                        className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
-                        initial={{ x: '-100%' }}
-                        whileHover={{ x: '100%' }}
-                        transition={{ duration: 0.6 }}
-                      />
-                      
-                      <div className="flex items-center gap-3 md:flex-col md:items-start relative z-10">
+                    </motion.div>
+                  </div>
+                  {/* Content */}
+                  <div className={`flex-1 min-w-0 ${isEven ? 'md:text-right' : ''}`}>
+                    <motion.div
+                      className="glass-card rounded-xl md:rounded-2xl p-4 md:p-8 w-full md:inline-block md:w-auto relative overflow-hidden group"
+                      whileHover={{ y: -4 }}
+                      whileTap={{ scale: 0.98 }}
+                      transition={{ type: 'spring', stiffness: 300 }}
+                    >
+                      <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-primary-500/10 to-transparent rounded-bl-full opacity-0 group-hover:opacity-100 transition-opacity md:hidden" />
+                      <div className="flex items-start gap-3 md:flex-col md:items-start relative z-10">
                         {isEven && (
                           <motion.div
-                            className="w-12 h-12 md:w-16 md:h-16 rounded-xl md:rounded-2xl bg-primary-500/10 flex items-center justify-center flex-shrink-0 relative"
+                            className="hidden md:flex w-12 h-12 md:w-16 md:h-16 rounded-xl md:rounded-2xl bg-primary-500/10 items-center justify-center flex-shrink-0 relative"
                             whileHover={{ rotate: [0, -15, 15, 0], scale: 1.15 }}
                             transition={{ duration: 0.5 }}
                           >
@@ -143,7 +156,7 @@ export default function Lifecycle() {
                           <div className="flex items-center gap-2 mb-2 md:justify-start">
                             {!isEven && (
                               <motion.div
-                                className="w-12 h-12 md:w-16 md:h-16 rounded-xl md:rounded-2xl bg-primary-500/10 flex items-center justify-center flex-shrink-0 relative"
+                                className="hidden md:flex w-12 h-12 md:w-16 md:h-16 rounded-xl md:rounded-2xl bg-primary-500/10 items-center justify-center flex-shrink-0 relative"
                                 whileHover={{ rotate: [0, -15, 15, 0], scale: 1.15 }}
                                 transition={{ duration: 0.5 }}
                               >
@@ -177,8 +190,8 @@ export default function Lifecycle() {
                     </motion.div>
                   </div>
 
-                  {/* Enhanced Timeline dot */}
-                  <div className="hidden md:block relative z-10">
+                  {/* Timeline dot — только десктоп */}
+                  <div className="hidden md:flex relative z-10 flex-shrink-0 justify-center">
                     <motion.div
                       className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-neutral-100 border-4 border-primary-500 flex items-center justify-center shadow-glass-strong relative"
                       whileInView={{ scale: [1, 1.3, 1], rotate: [0, 180, 360] }}

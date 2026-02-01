@@ -94,6 +94,14 @@
     touch-action: manipulation;
   }
   
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
   @media (max-width: 768px) {
     /* Enhanced mobile animations */
     .glass-card,

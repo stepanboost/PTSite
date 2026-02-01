@@ -5,7 +5,17 @@ const nextConfig = {
     domains: ['images.unsplash.com'],
     unoptimized: false,
   },
-  // Отключаем CSP для dev режима (Next.js использует eval для hot reload)
+  // Меньше нагрузка на file watcher — меньше шансов на EMFILE
+  webpack: (config, { dev }) => {
+    if (dev) {
+      config.watchOptions = {
+        ignored: ['**/node_modules/**', '**/.git/**', '**/.next/**'],
+        aggregateTimeout: 300,
+        poll: 2000,
+      }
+    }
+    return config
+  },
   async headers() {
     return [
       {

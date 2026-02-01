@@ -41,60 +41,21 @@ export default function OneCenter() {
             return (
               <motion.div
                 key={index}
-                initial={{ opacity: 0, y: 50, scale: 0.8, rotateX: -20 }}
-                animate={isInView ? { opacity: 1, y: 0, scale: 1, rotateX: 0 } : {}}
-                transition={{ 
-                  delay: index * 0.1, 
-                  duration: 0.8,
-                  type: 'spring',
-                  stiffness: 100
-                }}
-                whileHover={{ 
-                  y: -12, 
-                  scale: 1.1,
-                  rotateY: 10,
-                  transition: { type: 'spring', stiffness: 300 }
-                }}
-                whileTap={{ scale: 0.92, rotateY: 0 }}
-                className="glass-card rounded-xl md:rounded-2xl p-4 md:p-6 text-center cursor-pointer group relative overflow-hidden perspective-1000 touch-interactive"
-                style={{ transformStyle: 'preserve-3d' }}
+                initial={{ opacity: 0, y: 40 }}
+                animate={isInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ delay: index * 0.08, duration: 0.6, type: 'spring', stiffness: 120 }}
+                whileHover={{ y: -6 }}
+                whileTap={{ scale: 0.97 }}
+                className="glass-card rounded-xl md:rounded-2xl p-3 md:p-6 text-center cursor-pointer group relative overflow-hidden touch-interactive"
               >
-                {/* Animated background */}
                 <motion.div
-                  className="absolute inset-0 bg-gradient-to-br from-neutral-900/10 to-transparent opacity-0 group-hover:opacity-100"
+                  className="w-10 h-10 md:w-16 md:h-16 mx-auto mb-2 md:mb-4 rounded-xl md:rounded-2xl bg-primary-500/10 flex items-center justify-center group-hover:bg-primary-500/20 transition-colors"
+                  whileHover={{ scale: 1.1 }}
                   transition={{ duration: 0.3 }}
-                />
-                {/* Shimmer */}
-                <motion.div
-                  className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
-                  initial={{ x: '-100%' }}
-                  whileHover={{ x: '100%' }}
-                  transition={{ duration: 0.6 }}
-                />
-                
-                <motion.div
-                  className="w-12 h-12 md:w-16 md:h-16 mx-auto mb-3 md:mb-4 rounded-xl md:rounded-2xl bg-primary-500/10 flex items-center justify-center group-hover:bg-primary-500/20 transition-colors relative"
-                  whileHover={{ 
-                    rotate: [0, -15, 15, 0],
-                    scale: 1.2
-                  }}
-                  transition={{ duration: 0.5 }}
                 >
-                  <Icon className="w-6 h-6 md:w-8 md:h-8 text-primary-500 relative z-10" />
-                  <motion.div
-                    className="absolute inset-0 bg-primary-500/30 rounded-xl md:rounded-2xl blur-xl"
-                    animate={{
-                      scale: [1, 1.3, 1],
-                      opacity: [0.4, 0.7, 0.4],
-                    }}
-                    transition={{
-                      duration: 2 + index * 0.2,
-                      repeat: Infinity,
-                      ease: 'easeInOut',
-                    }}
-                  />
+                  <Icon className="w-5 h-5 md:w-8 md:h-8 text-primary-500" />
                 </motion.div>
-                <h3 className="text-sm md:text-base font-semibold text-neutral-900 group-hover:text-primary-500 transition-colors relative z-10">
+                <h3 className="text-xs md:text-base font-semibold text-neutral-900 group-hover:text-primary-500 transition-colors">
                   {service.title}
                 </h3>
               </motion.div>
@@ -102,11 +63,10 @@ export default function OneCenter() {
           })}
         </div>
 
-        {/* Central connection element */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
+          initial={{ opacity: 0, scale: 0.95 }}
           animate={isInView ? { opacity: 1, scale: 1 } : {}}
-          transition={{ delay: 0.6, duration: 0.8 }}
+          transition={{ delay: 0.5, duration: 0.7 }}
           className="mt-8 md:mt-12 text-center"
         >
           <div className="glass-card-strong rounded-2xl md:rounded-3xl p-6 md:p-12 max-w-2xl mx-auto">

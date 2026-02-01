@@ -1,6 +1,6 @@
 'use client'
 
-import { motion } from 'framer-motion'
+import { motion, useScroll, useTransform } from 'framer-motion'
 import { useInView } from 'framer-motion'
 import { useRef } from 'react'
 import { MessageSquare, FileText, Calculator, CheckCircle, Car, Wrench, Shield } from 'lucide-react'
@@ -45,7 +45,15 @@ const steps = [
 
 export default function Process() {
   const ref = useRef(null)
+  const timelineRef = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
+  
+  const { scrollYProgress } = useScroll({
+    target: timelineRef,
+    offset: ['start center', 'end center'],
+  })
+
+  const lineHeight = useTransform(scrollYProgress, [0, 1], ['0%', '100%'])
 
   return (
     <section ref={ref} className="section-padding bg-neutral-100 relative overflow-hidden">
@@ -64,84 +72,96 @@ export default function Process() {
           </p>
         </motion.div>
 
-        <div className="relative">
-          {/* Connection line for desktop */}
-          <div className="hidden lg:block absolute top-1/2 left-0 right-0 h-1 bg-neutral-200 -translate-y-1/2" />
+        {/* Mobile: vertical timeline with progress */}
+        <div ref={timelineRef} className="lg:hidden relative max-w-xl mx-auto">
+          <div className="absolute left-8 top-0 bottom-0 w-1 bg-neutral-200" />
           <motion.div
-            className="hidden lg:block absolute top-1/2 left-0 h-1 bg-primary-500 -translate-y-1/2 origin-left"
-            initial={{ scaleX: 0 }}
-            animate={isInView ? { scaleX: 1 } : {}}
-            transition={{ duration: 1.5, delay: 0.3 }}
+            className="absolute left-8 top-0 w-1 bg-primary-500 origin-top"
+            style={{ height: lineHeight }}
           />
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-7 gap-4 md:gap-6">
+          
+          <div className="space-y-6">
             {steps.map((step, index) => {
               const Icon = step.icon
               return (
                 <motion.div
                   key={index}
-                  initial={{ opacity: 0, y: 50, scale: 0.8, rotateX: -20 }}
-                  animate={isInView ? { opacity: 1, y: 0, scale: 1, rotateX: 0 } : {}}
-                  transition={{ 
-                    delay: index * 0.15, 
-                    duration: 0.8,
-                    type: 'spring',
-                    stiffness: 100
-                  }}
-                  whileHover={{ 
-                    y: -12, 
-                    scale: 1.05,
-                    rotateY: 5,
-                    transition: { type: 'spring', stiffness: 300 }
-                  }}
-                  whileTap={{ scale: 0.95, rotateY: 0 }}
-                  className="relative perspective-1000 touch-interactive"
-                  style={{ transformStyle: 'preserve-3d' }}
+                  initial={{ opacity: 0, x: -50 }}
+                  animate={isInView ? { opacity: 1, x: 0 } : {}}
+                  transition={{ delay: index * 0.1, duration: 0.6 }}
+                  className="relative pl-20"
+                >
+                  <motion.div
+                    className="absolute left-0 w-16 h-16 rounded-2xl bg-white border-4 border-neutral-100 shadow-medium flex items-center justify-center z-10"
+                    initial={{ scale: 0 }}
+                    animate={isInView ? { scale: 1 } : {}}
+                    transition={{ delay: index * 0.1 + 0.2, type: 'spring', stiffness: 200 }}
+                    whileTap={{ scale: 0.9 }}
+                  >
+                    <div className="relative">
+                      <Icon className="w-7 h-7 text-primary-500" />
+                      <div className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-primary-500 text-white flex items-center justify-center text-xs font-bold">
+                        {index + 1}
+                      </div>
+                    </div>
+                  </motion.div>
+                  
+                  <motion.div
+                    className="glass-card rounded-2xl p-5 relative overflow-hidden group touch-interactive"
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-bl from-primary-500/10 to-transparent rounded-bl-full" />
+                    <div className="relative z-10">
+                      <h3 className="text-lg font-bold text-neutral-900 mb-2 flex items-center gap-2">
+                        {step.title}
+                      </h3>
+                      <p className="text-sm text-neutral-600 leading-relaxed">
+                        {step.description}
+                      </p>
+                    </div>
+                  </motion.div>
+                </motion.div>
+              )
+            })}
+          </div>
+        </div>
+
+        {/* Desktop: horizontal with progress line */}
+        <div className="hidden lg:block relative">
+          <div className="absolute top-1/2 left-0 right-0 h-1 bg-neutral-200 -translate-y-1/2" />
+          <motion.div
+            className="absolute top-1/2 left-0 h-1 bg-primary-500 -translate-y-1/2 origin-left"
+            initial={{ scaleX: 0 }}
+            animate={isInView ? { scaleX: 1 } : {}}
+            transition={{ duration: 1.5, delay: 0.3 }}
+          />
+
+          <div className="grid grid-cols-7 gap-4 md:gap-6">
+            {steps.map((step, index) => {
+              const Icon = step.icon
+              return (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 50 }}
+                  animate={isInView ? { opacity: 1, y: 0 } : {}}
+                  transition={{ delay: index * 0.15, duration: 0.8, type: 'spring', stiffness: 100 }}
+                  whileHover={{ y: -8 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="relative touch-interactive"
                 >
                   <div className="glass-card rounded-xl md:rounded-2xl p-4 md:p-6 text-center h-full relative overflow-hidden group">
-                    {/* Animated background */}
-                    <motion.div
-                      className="absolute inset-0 bg-gradient-to-br from-neutral-900/10 to-transparent opacity-0 group-hover:opacity-100"
-                      transition={{ duration: 0.3 }}
-                    />
-                    {/* Shimmer */}
-                    <motion.div
-                      className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
-                      initial={{ x: '-100%' }}
-                      whileHover={{ x: '100%' }}
-                      transition={{ duration: 0.6 }}
-                    />
-                    
+                    <div className="absolute inset-0 bg-gradient-to-br from-neutral-900/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                     <div className="relative mb-3 md:mb-4 z-10">
                       <motion.div
-                        className="w-12 h-12 md:w-16 md:h-16 mx-auto rounded-xl md:rounded-2xl bg-primary-500/10 flex items-center justify-center relative"
-                        whileHover={{ 
-                          rotate: [0, -15, 15, 0],
-                          scale: 1.2
-                        }}
-                        transition={{ duration: 0.5 }}
+                        className="w-12 h-12 md:w-16 md:h-16 mx-auto rounded-xl md:rounded-2xl bg-primary-500/10 flex items-center justify-center"
+                        whileHover={{ scale: 1.1 }}
+                        transition={{ duration: 0.3 }}
                       >
-                        <Icon className="w-6 h-6 md:w-8 md:h-8 text-primary-500 relative z-10" />
-                        <motion.div
-                          className="absolute inset-0 bg-primary-500/30 rounded-xl md:rounded-2xl blur-xl"
-                          animate={{
-                            scale: [1, 1.3, 1],
-                            opacity: [0.4, 0.7, 0.4],
-                          }}
-                          transition={{
-                            duration: 2 + index * 0.2,
-                            repeat: Infinity,
-                            ease: 'easeInOut',
-                          }}
-                        />
+                        <Icon className="w-6 h-6 md:w-8 md:h-8 text-primary-500" />
                       </motion.div>
-                      <motion.div
-                        className="absolute -top-1 -right-1 md:-top-2 md:-right-2 w-6 h-6 md:w-8 md:h-8 rounded-full bg-primary-500 text-white flex items-center justify-center text-xs md:text-sm font-bold shadow-lg relative z-20"
-                        whileHover={{ scale: 1.2, rotate: 360 }}
-                        transition={{ duration: 0.5 }}
-                      >
+                      <div className="absolute -top-1 -right-1 md:-top-2 md:-right-2 w-6 h-6 md:w-8 md:h-8 rounded-full bg-primary-500 text-white flex items-center justify-center text-xs md:text-sm font-bold shadow-lg">
                         {index + 1}
-                      </motion.div>
+                      </div>
                     </div>
                     <h3 className="text-sm md:text-base font-bold text-neutral-900 mb-1 md:mb-2 group-hover:text-primary-500 transition-colors relative z-10">
                       {step.title}

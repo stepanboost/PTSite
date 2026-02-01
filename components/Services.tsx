@@ -94,7 +94,6 @@ export default function Services() {
           </p>
         </motion.div>
 
-        {/* Filter chips */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
@@ -108,7 +107,7 @@ export default function Services() {
               className={`px-4 py-2 md:px-6 md:py-3 rounded-xl md:rounded-2xl text-sm md:text-base font-medium transition-all duration-200 ${
                 selectedCategory === category
                   ? 'bg-primary-500 text-white shadow-medium'
-                  : 'bg-neutral-100/80 backdrop-blur-glass text-neutral-700 hover:bg-neutral-100 shadow-soft'
+                  : 'bg-white/80 backdrop-blur-sm text-neutral-700 hover:bg-white border border-neutral-200/50 shadow-soft'
               }`}
             >
               {category}
@@ -116,86 +115,96 @@ export default function Services() {
           ))}
         </motion.div>
 
-        {/* Services grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+        {/* Mobile: horizontal carousel, Desktop: grid */}
+        <div className="md:hidden relative">
+          <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide pb-4 px-4 -mx-4">
+            {filteredServices.map((service, index) => {
+              const Icon = service.icon
+              return (
+                <motion.div
+                  key={service.id}
+                  initial={{ opacity: 0, x: 100 }}
+                  animate={isInView ? { opacity: 1, x: 0 } : {}}
+                  transition={{ delay: index * 0.1, duration: 0.6 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => setSelectedService(service.id)}
+                  className="glass-card rounded-2xl p-6 cursor-pointer group relative overflow-hidden min-w-[85vw] snap-center touch-interactive"
+                >
+                  <div className="absolute inset-0 bg-gradient-to-br from-primary-500/5 to-transparent opacity-0 group-active:opacity-100 transition-opacity" />
+                  <div className="relative z-10">
+                    <div className="flex items-center justify-between mb-4">
+                      <motion.div
+                        className="w-14 h-14 rounded-xl bg-primary-500/10 flex items-center justify-center"
+                        whileTap={{ scale: 0.9 }}
+                      >
+                        <Icon className="w-7 h-7 text-primary-500" />
+                      </motion.div>
+                      <span className="text-xs font-semibold text-neutral-400 bg-neutral-100 px-3 py-1 rounded-full">
+                        {index + 1}/{filteredServices.length}
+                      </span>
+                    </div>
+                    <h3 className="text-xl font-bold text-neutral-900 mb-3 group-active:text-primary-500 transition-colors">
+                      {service.title}
+                    </h3>
+                    <p className="text-sm text-neutral-600 mb-4 leading-relaxed line-clamp-3">{service.description}</p>
+                    <div className="flex items-center justify-between">
+                      <span className="inline-flex items-center text-primary-500 font-medium text-sm gap-2">
+                        Подробнее
+                        <ArrowRight className="w-4 h-4" />
+                      </span>
+                      <div className="flex gap-1">
+                        {filteredServices.map((_, i) => (
+                          <div 
+                            key={i} 
+                            className={`w-1.5 h-1.5 rounded-full transition-all ${
+                              i === index ? 'bg-primary-500 w-4' : 'bg-neutral-300'
+                            }`}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              )
+            })}
+          </div>
+          <div className="text-center mt-2 text-xs text-neutral-500">
+            Свайп для просмотра →
+          </div>
+        </div>
+
+        {/* Desktop: grid */}
+        <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
           {filteredServices.map((service, index) => {
             const Icon = service.icon
             return (
               <motion.div
                 key={service.id}
-                initial={{ opacity: 0, y: 50, rotateX: -15 }}
-                animate={isInView ? { opacity: 1, y: 0, rotateX: 0 } : {}}
-                transition={{ 
-                  delay: index * 0.1, 
-                  duration: 0.8,
-                  type: 'spring',
-                  stiffness: 100
-                }}
-                whileHover={{ 
-                  y: -12, 
-                  scale: 1.03,
-                  rotateY: 5,
-                  transition: { type: 'spring', stiffness: 300 }
-                }}
-                whileTap={{ scale: 0.95, rotateY: 0 }}
+                initial={{ opacity: 0, y: 50 }}
+                animate={isInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ delay: index * 0.1, duration: 0.8, type: 'spring', stiffness: 100 }}
+                whileHover={{ y: -8, transition: { type: 'spring', stiffness: 300 } }}
+                whileTap={{ scale: 0.98 }}
                 onClick={() => setSelectedService(service.id)}
-                className="glass-card rounded-xl md:rounded-2xl p-5 md:p-8 cursor-pointer group relative overflow-hidden perspective-1000 touch-interactive"
-                style={{ transformStyle: 'preserve-3d' }}
+                className="glass-card rounded-xl md:rounded-2xl p-5 md:p-8 cursor-pointer group relative overflow-hidden touch-interactive"
               >
-                {/* Animated gradient background */}
-                <motion.div
-                  className="absolute inset-0 bg-gradient-to-br from-neutral-900/10 via-primary-500/5 to-transparent"
-                  initial={{ opacity: 0 }}
-                  whileHover={{ opacity: 1 }}
-                  transition={{ duration: 0.3 }}
-                />
-                {/* Shimmer effect on hover */}
-                <motion.div
-                  className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
-                  initial={{ x: '-100%' }}
-                  whileHover={{ x: '100%' }}
-                  transition={{ duration: 0.6 }}
-                />
+                <div className="absolute inset-0 bg-gradient-to-br from-neutral-900/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                 <div className="relative z-10">
                   <motion.div
-                    className="w-12 h-12 md:w-16 md:h-16 rounded-xl md:rounded-2xl bg-primary-500/10 flex items-center justify-center mb-4 md:mb-6 group-hover:bg-primary-500/20 transition-colors relative"
-                    whileHover={{ 
-                      rotate: [0, -10, 10, 0],
-                      scale: 1.1
-                    }}
-                    transition={{ duration: 0.5 }}
+                    className="w-12 h-12 md:w-16 md:h-16 rounded-xl md:rounded-2xl bg-primary-500/10 flex items-center justify-center mb-4 md:mb-6 group-hover:bg-primary-500/20 transition-colors"
+                    whileHover={{ scale: 1.08 }}
+                    transition={{ duration: 0.3 }}
                   >
-                    <Icon className="w-6 h-6 md:w-8 md:h-8 text-primary-500 relative z-10" />
-                    <motion.div
-                      className="absolute inset-0 bg-primary-500/20 rounded-xl md:rounded-2xl blur-xl"
-                      animate={{
-                        scale: [1, 1.2, 1],
-                        opacity: [0.3, 0.6, 0.3],
-                      }}
-                      transition={{
-                        duration: 2,
-                        repeat: Infinity,
-                        ease: 'easeInOut',
-                      }}
-                    />
+                    <Icon className="w-6 h-6 md:w-8 md:h-8 text-primary-500" />
                   </motion.div>
                   <h3 className="text-lg md:text-xl font-bold text-neutral-900 mb-2 md:mb-3 group-hover:text-primary-500 transition-colors">
                     {service.title}
                   </h3>
                   <p className="text-sm md:text-base text-neutral-600 mb-3 md:mb-4">{service.description}</p>
-                  <motion.div
-                    className="flex items-center text-primary-500 font-medium text-sm md:text-base"
-                    whileHover={{ x: 4 }}
-                  >
-                    <span>Подробнее</span>
-                    <motion.div
-                      initial={{ opacity: 0, x: -10 }}
-                      whileHover={{ opacity: 1, x: 0 }}
-                      transition={{ duration: 0.2 }}
-                    >
-                      <ArrowRight className="w-4 h-4 md:w-5 md:h-5 ml-2" />
-                    </motion.div>
-                  </motion.div>
+                  <span className="inline-flex items-center text-primary-500 font-medium text-sm md:text-base gap-2 group-hover:gap-3 transition-all">
+                    Подробнее
+                    <ArrowRight className="w-4 h-4 md:w-5 md:h-5" />
+                  </span>
                 </div>
               </motion.div>
             )
