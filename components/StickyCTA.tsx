@@ -32,12 +32,12 @@ export default function StickyCTA({ onOpenQuiz }: StickyCTAProps) {
         initial={{ y: 100 }}
         animate={{ y: 0 }}
         exit={{ y: 100 }}
-        className="glass-card-strong rounded-2xl p-4 shadow-glass-strong"
+        className="bg-white border border-neutral-200/60 rounded-2xl p-4 shadow-[0_10px_30px_rgba(0,0,0,0.06)]"
       >
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-primary-500/10 flex items-center justify-center">
-              <Calculator className="w-5 h-5 text-primary-500" />
+            <div className="w-10 h-10 rounded-xl bg-red-50 flex items-center justify-center">
+              <Calculator className="w-5 h-5 text-red-600" />
             </div>
             <div>
               <div className="font-semibold text-neutral-900 text-sm">Получить расчёт</div>
@@ -46,7 +46,7 @@ export default function StickyCTA({ onOpenQuiz }: StickyCTAProps) {
           </div>
           <button
             onClick={() => setIsVisible(false)}
-            className="w-8 h-8 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center transition-colors"
+            className="w-8 h-8 rounded-full bg-white border border-neutral-200/60 hover:bg-neutral-50 flex items-center justify-center transition-colors"
           >
             <X className="w-4 h-4 text-neutral-600" />
           </button>

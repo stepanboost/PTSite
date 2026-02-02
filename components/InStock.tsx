@@ -3,53 +3,50 @@
 import { motion } from 'framer-motion'
 import { useInView } from 'framer-motion'
 import { useRef, useState } from 'react'
-import { Car, Calendar, MapPin, CheckCircle, Sparkles, ArrowRight, Phone } from 'lucide-react'
+import { Car, Calendar, MapPin, CheckCircle, ArrowRight } from 'lucide-react'
 import Image from 'next/image'
 
 const cars = [
   {
     id: 1,
-    brand: 'Zeekr',
-    model: '001',
-    year: 2024,
-    price: 'По запросу',
+    brand: 'Audi',
+    model: 'A5 Long',
+    year: 2025,
+    price: '6 300 000₽',
     location: 'Москва',
     status: 'В наличии',
-    features: ['Полная адаптация', 'PPF защита', 'Гарантия 2 года'],
+    features: ['Максимальная комплектация', 'Полная адаптация', 'Гарантия'],
     images: [
-      '/image/case/zeeker/zeekr-01.jpeg',
-      '/image/case/zeeker/zeekr-02.jpeg',
-      '/image/case/zeeker/zeekr-03.jpeg',
+      '/image/audi-a5.png',
     ],
   },
   {
     id: 2,
     brand: 'Zeekr',
-    model: 'X',
-    year: 2024,
-    price: 'По запросу',
-    location: 'Москва',
+    model: '001',
+    year: 2025,
+    price: '11 100 000₽',
+    location: 'Санкт-Петербург',
     status: 'В наличии',
-    features: ['Русификация', 'Керамика', 'Полное ТО'],
+    features: ['Рестайлинг 2025 года', '989 л.с.', 'Первый в городе'],
     images: [
-      '/image/case/zeeker/zeekr-04.jpeg',
-      '/image/case/zeeker/zeekr-05.jpeg',
-      '/image/case/zeeker/zeekr-06.jpeg',
+      '/image/zeekr-001-2026.png',
     ],
   },
   {
     id: 3,
     brand: 'Zeekr',
-    model: '009',
+    model: '9X комплектация MAX',
     year: 2024,
-    price: 'По запросу',
+    price: '12 500 000₽',
     location: 'Москва',
-    status: 'Под заказ',
-    features: ['Импорт из Китая', 'Адаптация', 'Детейлинг'],
+    status: 'Раскупили',
+    features: ['Максимальная комплектация', 'Полная подготовка', 'Гарантия'],
     images: [
-      '/image/case/zeeker/zeekr-07.jpeg',
-      '/image/case/zeeker/zeekr-01.jpeg',
-      '/image/case/zeeker/zeekr-02.jpeg',
+      '/image/case/zeeker/zeekr-009-01.jpeg',
+      '/image/case/zeeker/zeekr-009-02.jpeg',
+      '/image/case/zeeker/zeekr-009-03.jpeg',
+      '/image/case/zeeker/zeekr-009-04.jpeg',
     ],
   },
 ]
@@ -59,6 +56,7 @@ export default function InStock() {
   const isInView = useInView(ref, { once: true, margin: '-100px' })
   const [selectedCar, setSelectedCar] = useState<number | null>(null)
   const [currentImageIndex, setCurrentImageIndex] = useState<{ [key: number]: number }>({})
+  const [filter, setFilter] = useState<'all' | 'in-stock' | 'pre-order'>('all')
 
   const nextImage = (carId: number, totalImages: number) => {
     setCurrentImageIndex(prev => ({
@@ -74,43 +72,62 @@ export default function InStock() {
     }))
   }
 
-  return (
-    <section ref={ref} className="section-padding bg-neutral-100 relative overflow-hidden">
-      {/* Background decoration */}
-      <div className="absolute inset-0 opacity-30">
-        <div className="absolute top-0 left-0 w-96 h-96 bg-primary-500/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 right-0 w-96 h-96 bg-primary-500/10 rounded-full blur-3xl" />
-      </div>
+  const filteredCars = filter === 'all' 
+    ? cars 
+    : filter === 'in-stock'
+    ? cars.filter(c => c.status === 'В наличии')
+    : cars.filter(c => c.status === 'Под заказ' || c.status === 'Раскупили')
 
-      <div className="container-custom relative z-10">
+  return (
+    <section id="in-stock" ref={ref} className="section-padding bg-white relative overflow-hidden">
+      <div className="container-custom">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8 }}
-          className="text-center mb-8 md:mb-16"
+          className="text-center mb-8"
         >
-          <motion.div
-            className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-full bg-primary-500/10 text-primary-500 font-semibold text-sm mb-4"
-            animate={{ scale: [1, 1.05, 1] }}
-            transition={{ duration: 2, repeat: Infinity }}
-          >
-            <Sparkles className="w-4 h-4" />
-            Доступно сейчас
-          </motion.div>
-          <h2 className="text-h2 md:text-h1 lg:text-display-sm font-bold text-neutral-900 mb-3 md:mb-4 text-balance">
+          <h2 className="section-title mb-4">
             Автомобили в наличии
           </h2>
-          <p className="text-base md:text-xl text-neutral-600 max-w-3xl mx-auto text-balance">
+          <p className="text-base md:text-lg text-neutral-600 max-w-3xl mx-auto leading-relaxed">
             Готовые автомобили с полной адаптацией и гарантией. Можно забрать сегодня
           </p>
         </motion.div>
 
-        {/* Mobile: horizontal carousel with enhanced design */}
+        {/* Премиум фильтры */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ delay: 0.2, duration: 0.6 }}
+          className="flex justify-center gap-2 mb-8"
+        >
+          {[
+            { id: 'all', label: 'Все' },
+            { id: 'in-stock', label: 'В наличии' },
+            { id: 'pre-order', label: 'Под заказ' },
+          ].map((filterOption) => (
+            <button
+              key={filterOption.id}
+              onClick={() => setFilter(filterOption.id as typeof filter)}
+              className={`px-6 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
+                filter === filterOption.id
+                  ? 'bg-white border border-neutral-300 shadow-sm text-neutral-900'
+                  : 'bg-neutral-100/70 hover:bg-neutral-100 text-neutral-600'
+              }`}
+            >
+              {filterOption.label}
+            </button>
+          ))}
+        </motion.div>
+
+        {/* Mobile: horizontal carousel */}
         <div className="lg:hidden">
           <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide pb-4 px-4 -mx-4">
-            {cars.map((car, index) => {
+            {filteredCars.map((car, index) => {
               const currentImg = currentImageIndex[car.id] || 0
               const isAvailable = car.status === 'В наличии'
+              const isSoldOut = car.status === 'Раскупили'
               
               return (
                 <motion.div
@@ -119,21 +136,21 @@ export default function InStock() {
                   animate={isInView ? { opacity: 1, x: 0 } : {}}
                   transition={{ delay: index * 0.1, duration: 0.6 }}
                   whileTap={{ scale: 0.95 }}
-                  className="glass-card rounded-2xl overflow-hidden min-w-[90vw] snap-center relative touch-interactive"
+                  className="card rounded-2xl overflow-hidden min-w-[90vw] snap-center relative touch-interactive p-0"
                 >
-                  {/* Status badge */}
+                  {/* Status badge - только один бейдж */}
                   <div className="absolute top-4 right-4 z-20">
-                    <motion.div
-                      className={`px-3 py-1.5 rounded-full text-xs font-bold backdrop-blur-sm ${
+                    <div
+                      className={`px-3 py-1.5 rounded-xl text-xs font-semibold ${
                         isAvailable 
-                          ? 'bg-green-500/90 text-white' 
-                          : 'bg-orange-500/90 text-white'
+                          ? 'bg-green-500 text-white' 
+                          : isSoldOut
+                          ? 'bg-neutral-500 text-white'
+                          : 'bg-orange-500 text-white'
                       }`}
-                      animate={isAvailable ? { scale: [1, 1.1, 1] } : {}}
-                      transition={{ duration: 2, repeat: Infinity }}
                     >
                       {car.status}
-                    </motion.div>
+                    </div>
                   </div>
 
                   {/* Image carousel */}
@@ -224,23 +241,21 @@ export default function InStock() {
                     </div>
 
                     {/* CTA buttons */}
-                    <div className="flex gap-2">
+                    <div className="flex flex-col gap-2">
                       <button
                         onClick={() => {
                           const phone = '+79999999999' // Replace with actual phone
                           window.open(`tel:${phone}`, '_self')
                         }}
-                        className="flex-1 btn-primary flex items-center justify-center gap-2 text-sm py-3"
+                        className="w-full btn-primary flex items-center justify-center gap-2"
                       >
-                        <Phone className="w-4 h-4" />
-                        Позвонить
+                        Получить предложение
                       </button>
                       <button
                         onClick={() => setSelectedCar(car.id)}
-                        className="flex-1 btn-secondary flex items-center justify-center gap-2 text-sm py-3"
+                        className="w-full text-sm text-neutral-600 hover:text-neutral-900 transition-colors"
                       >
                         Подробнее
-                        <ArrowRight className="w-4 h-4" />
                       </button>
                     </div>
                   </div>
@@ -255,9 +270,10 @@ export default function InStock() {
 
         {/* Desktop: grid */}
         <div className="hidden lg:grid lg:grid-cols-3 gap-6">
-          {cars.map((car, index) => {
+          {filteredCars.map((car, index) => {
             const currentImg = currentImageIndex[car.id] || 0
             const isAvailable = car.status === 'В наличии'
+            const isSoldOut = car.status === 'Раскупили'
             
             return (
               <motion.div
@@ -265,16 +281,18 @@ export default function InStock() {
                 initial={{ opacity: 0, y: 50 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ delay: index * 0.15, duration: 0.8 }}
-                whileHover={{ y: -8 }}
-                className="glass-card rounded-2xl overflow-hidden relative group"
+                whileHover={{ y: -4 }}
+                className="card rounded-2xl overflow-hidden relative group p-0"
               >
-                {/* Status badge */}
+                {/* Status badge - только один бейдж */}
                 <div className="absolute top-4 right-4 z-20">
                   <div
-                    className={`px-4 py-2 rounded-full text-sm font-bold backdrop-blur-sm ${
+                    className={`px-4 py-2 rounded-xl text-sm font-semibold ${
                       isAvailable 
-                        ? 'bg-green-500/90 text-white' 
-                        : 'bg-orange-500/90 text-white'
+                        ? 'bg-green-500 text-white' 
+                        : isSoldOut
+                        ? 'bg-neutral-500 text-white'
+                        : 'bg-orange-500 text-white'
                     }`}
                   >
                     {car.status}
@@ -368,23 +386,21 @@ export default function InStock() {
                   </div>
 
                   {/* CTA buttons */}
-                  <div className="flex gap-3">
+                  <div className="flex flex-col gap-2">
                     <button
                       onClick={() => {
                         const phone = '+79999999999' // Replace with actual phone
                         window.open(`tel:${phone}`, '_self')
                       }}
-                      className="flex-1 btn-primary flex items-center justify-center gap-2"
+                      className="w-full btn-primary"
                     >
-                      <Phone className="w-5 h-5" />
-                      Позвонить
+                      Получить предложение
                     </button>
                     <button
                       onClick={() => setSelectedCar(car.id)}
-                      className="flex-1 btn-secondary flex items-center justify-center gap-2"
+                      className="w-full text-sm text-neutral-600 hover:text-neutral-900 transition-colors"
                     >
                       Подробнее
-                      <ArrowRight className="w-5 h-5" />
                     </button>
                   </div>
                 </div>

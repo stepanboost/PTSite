@@ -43,66 +43,67 @@ export default function FAQ() {
   const [openIndex, setOpenIndex] = useState<number | null>(null)
 
   return (
-    <section className="section-padding bg-neutral-100 relative">
+    <section className="section-padding bg-white relative">
       <div className="container-custom">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-100px' }}
           transition={{ duration: 0.8 }}
-          className="text-center mb-8 md:mb-16"
+          className="text-center mb-12"
         >
-          <h2 className="text-h2 md:text-h1 lg:text-display-sm font-bold text-neutral-900 mb-3 md:mb-4 text-balance">
+          <h2 className="section-title mb-4">
             Часто задаваемые вопросы
           </h2>
-          <p className="text-base md:text-xl text-neutral-600 max-w-3xl mx-auto text-balance">
+          <p className="text-base md:text-lg text-neutral-600 max-w-3xl mx-auto leading-relaxed">
             Ответы на самые популярные вопросы о наших услугах
           </p>
         </motion.div>
 
-        <div className="max-w-3xl mx-auto space-y-3 md:space-y-4">
-          {faqs.map((faq, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-50px' }}
-              transition={{ delay: index * 0.05, duration: 0.5 }}
-              className="glass-card rounded-xl md:rounded-2xl overflow-hidden"
-            >
-              <button
-                onClick={() => setOpenIndex(openIndex === index ? null : index)}
-                className="w-full p-4 md:p-6 flex items-center justify-between text-left hover:bg-white/50 transition-colors"
+        <div className="max-w-3xl mx-auto">
+          <div className="space-y-0">
+            {faqs.map((faq, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-50px' }}
+                transition={{ delay: index * 0.05, duration: 0.5 }}
+                className="border-b border-neutral-200/60 last:border-b-0"
               >
-                <span className="text-sm md:text-base font-semibold text-neutral-900 pr-3 md:pr-4">{faq.question}</span>
-                <motion.div
-                  animate={{ rotate: openIndex === index ? 180 : 0 }}
-                  transition={{ duration: 0.3 }}
-                  className="flex-shrink-0"
+                <button
+                  onClick={() => setOpenIndex(openIndex === index ? null : index)}
+                  className="w-full p-6 flex items-center justify-between text-left hover:bg-neutral-50/50 transition-colors"
                 >
-                  <ChevronDown className="w-4 h-4 md:w-5 md:h-5 text-neutral-600" />
-                </motion.div>
-              </button>
-              <AnimatePresence>
-                {openIndex === index && (
+                  <span className="text-base font-semibold text-neutral-900 pr-4">{faq.question}</span>
                   <motion.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: 'auto', opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
+                    animate={{ rotate: openIndex === index ? 180 : 0 }}
                     transition={{ duration: 0.3 }}
-                    className="overflow-hidden"
+                    className="flex-shrink-0"
                   >
-                    <div className="px-4 pb-4 md:px-6 md:pb-6 text-sm md:text-base text-neutral-600 leading-relaxed">
-                      {faq.answer}
-                    </div>
+                    <ChevronDown className="w-5 h-5 text-neutral-600" />
                   </motion.div>
-                )}
-              </AnimatePresence>
-            </motion.div>
-          ))}
+                </button>
+                <AnimatePresence>
+                  {openIndex === index && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.3 }}
+                      className="overflow-hidden"
+                    >
+                      <div className="px-6 pb-6 text-base text-neutral-600 leading-relaxed">
+                        {faq.answer}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </div>
     </section>
   )
 }
-

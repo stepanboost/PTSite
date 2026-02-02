@@ -10,7 +10,6 @@ import {
   Wrench, 
   Shield, 
   TrendingUp,
-  X,
   ArrowRight
 } from 'lucide-react'
 
@@ -18,256 +17,179 @@ const services = [
   {
     id: 'import',
     icon: Car,
-    title: 'Импорт/покупка под ключ',
-    category: 'Импорт',
-    description: 'Покупка автомобилей из Китая, Европы, Японии и РФ. Полное сопровождение сделки, проверка, оформление документов.',
-    details: 'Мы работаем с проверенными поставщиками и дилерами по всему миру. Наша команда проверяет каждый автомобиль перед покупкой, ведёт переговоры и оформляет все необходимые документы. Вы получаете готовый к использованию автомобиль без лишних хлопот.',
+    title: 'Импорт',
+    description: 'Покупка автомобилей из Китая, Европы, Японии и Кореи. Полное сопровождение сделки, проверка, оформление документов.',
+    bullets: [
+      'Проверка автомобиля перед покупкой',
+      'Ведение переговоров и оформление документов',
+      'Работа с проверенными поставщиками',
+      'Готовый к использованию автомобиль',
+    ],
   },
   {
     id: 'localization',
     icon: Globe,
-    title: 'Русификация и адаптация под РФ',
-    category: 'Адаптация',
+    title: 'Адаптация',
     description: 'Полная адаптация автомобиля под российские стандарты: русификация интерфейса, настройка навигации, соответствие требованиям.',
-    details: 'Наши специалисты адаптируют мультимедиа-систему, навигацию, голосового помощника под русский язык. Настраиваем все системы под российские стандарты и требования безопасности.',
+    bullets: [
+      'Русификация мультимедиа-системы',
+      'Настройка навигации под РФ',
+      'Адаптация голосового помощника',
+      'Соответствие стандартам безопасности',
+    ],
   },
   {
     id: 'improvements',
     icon: Sparkles,
-    title: 'Доработки/улучшения',
-    category: 'Улучшения',
+    title: 'Улучшения',
     description: 'PPF, оптика, шумоизоляция, сигнализация, антикоррозийная обработка, керамика, детейлинг — всё для идеального состояния.',
-    details: 'Защитная плёнка PPF, улучшенная оптика, профессиональная шумоизоляция, современные системы безопасности, антикоррозийная обработка, керамическое покрытие и детейлинг — мы делаем ваш автомобиль идеальным.',
+    bullets: [
+      'Защитная плёнка PPF',
+      'Профессиональная шумоизоляция',
+      'Антикоррозийная обработка',
+      'Керамическое покрытие и детейлинг',
+    ],
   },
   {
     id: 'service',
     icon: Wrench,
-    title: 'ТО и ремонт',
-    category: 'Сервис',
+    title: 'Сервис',
     description: 'Техническое обслуживание и ремонт: электрика, подвеска, HV-системы, обновление ПО, запчасти — всё в одном месте.',
-    details: 'Наш сервисный центр оснащён современным оборудованием для диагностики и ремонта. Мы работаем с электрикой, подвеской, гибридными системами, обновляем программное обеспечение и всегда имеем необходимые запчасти.',
+    bullets: [
+      'Диагностика и ремонт электрики',
+      'Работа с гибридными системами',
+      'Обновление программного обеспечения',
+      'Всегда в наличии необходимые запчасти',
+    ],
   },
   {
     id: 'guarantee',
     icon: Shield,
-    title: 'Гарантия на авто и работы',
-    category: 'Гарантия',
+    title: 'Гарантия',
     description: 'Полная гарантия на автомобиль и все выполненные работы. Долгосрочное сопровождение и поддержка.',
-    details: 'Мы предоставляем гарантию на все автомобили и выполненные работы. Наша команда всегда на связи для решения любых вопросов и поддержки на протяжении всего срока эксплуатации.',
+    bullets: [
+      'Гарантия на все автомобили',
+      'Гарантия на выполненные работы',
+      'Долгосрочное сопровождение',
+      'Поддержка на весь срок эксплуатации',
+    ],
   },
   {
     id: 'sale',
     icon: TrendingUp,
-    title: 'Комиссионная продажа',
-    category: 'Продажа',
+    title: 'Продажа',
     description: 'Помощь в продаже вашего автомобиля: оценка, подготовка, размещение, переговоры, оформление сделки.',
-    details: 'Мы поможем продать ваш автомобиль по максимальной цене. Проводим оценку, готовим автомобиль к продаже, размещаем на всех площадках, ведём переговоры и оформляем сделку.',
+    bullets: [
+      'Оценка автомобиля',
+      'Подготовка к продаже',
+      'Размещение на всех площадках',
+      'Ведение переговоров и оформление',
+    ],
   },
 ]
-
-const categories = ['Все', 'Импорт', 'Адаптация', 'Улучшения', 'Сервис', 'Гарантия', 'Продажа']
 
 export default function Services() {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
-  const [selectedCategory, setSelectedCategory] = useState('Все')
-  const [selectedService, setSelectedService] = useState<string | null>(null)
+  const [activeTab, setActiveTab] = useState('import')
 
-  const filteredServices = selectedCategory === 'Все' 
-    ? services 
-    : services.filter(s => s.category === selectedCategory)
+  const activeService = services.find(s => s.id === activeTab) || services[0]
 
   return (
-    <section id="services" ref={ref} className="section-padding bg-neutral-100 relative">
+    <section id="services" ref={ref} className="section-padding bg-white relative">
       <div className="container-custom">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8 }}
-          className="text-center mb-8 md:mb-16"
+          className="text-center mb-12"
         >
-          <h2 className="text-h2 md:text-h1 lg:text-display-sm font-bold text-neutral-900 mb-3 md:mb-4 text-balance">
-            Наши услуги
+          <h2 className="section-title mb-4">
+            Чем мы занимаемся
           </h2>
-          <p className="text-base md:text-xl text-neutral-600 max-w-3xl mx-auto text-balance">
+          <p className="text-base md:text-lg text-neutral-600 max-w-3xl mx-auto leading-relaxed">
             Полный спектр услуг для вашего автомобиля в одном месте
           </p>
         </motion.div>
 
+        {/* Табы */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ delay: 0.2, duration: 0.6 }}
-          className="flex flex-wrap justify-center gap-2 md:gap-3 mb-6 md:mb-12"
+          className="flex flex-wrap justify-center gap-2 mb-8"
         >
-          {categories.map((category) => (
-            <button
-              key={category}
-              onClick={() => setSelectedCategory(category)}
-              className={`px-4 py-2 md:px-6 md:py-3 rounded-xl md:rounded-2xl text-sm md:text-base font-medium transition-all duration-200 ${
-                selectedCategory === category
-                  ? 'bg-primary-500 text-white shadow-medium'
-                  : 'bg-white/80 backdrop-blur-sm text-neutral-700 hover:bg-white border border-neutral-200/50 shadow-soft'
-              }`}
-            >
-              {category}
-            </button>
-          ))}
-        </motion.div>
-
-        {/* Mobile: horizontal carousel, Desktop: grid */}
-        <div className="md:hidden relative">
-          <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide pb-4 px-4 -mx-4">
-            {filteredServices.map((service, index) => {
-              const Icon = service.icon
-              return (
-                <motion.div
-                  key={service.id}
-                  initial={{ opacity: 0, x: 100 }}
-                  animate={isInView ? { opacity: 1, x: 0 } : {}}
-                  transition={{ delay: index * 0.1, duration: 0.6 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => setSelectedService(service.id)}
-                  className="glass-card rounded-2xl p-6 cursor-pointer group relative overflow-hidden min-w-[85vw] snap-center touch-interactive"
-                >
-                  <div className="absolute inset-0 bg-gradient-to-br from-primary-500/5 to-transparent opacity-0 group-active:opacity-100 transition-opacity" />
-                  <div className="relative z-10">
-                    <div className="flex items-center justify-between mb-4">
-                      <motion.div
-                        className="w-14 h-14 rounded-xl bg-primary-500/10 flex items-center justify-center"
-                        whileTap={{ scale: 0.9 }}
-                      >
-                        <Icon className="w-7 h-7 text-primary-500" />
-                      </motion.div>
-                      <span className="text-xs font-semibold text-neutral-400 bg-neutral-100 px-3 py-1 rounded-full">
-                        {index + 1}/{filteredServices.length}
-                      </span>
-                    </div>
-                    <h3 className="text-xl font-bold text-neutral-900 mb-3 group-active:text-primary-500 transition-colors">
-                      {service.title}
-                    </h3>
-                    <p className="text-sm text-neutral-600 mb-4 leading-relaxed line-clamp-3">{service.description}</p>
-                    <div className="flex items-center justify-between">
-                      <span className="inline-flex items-center text-primary-500 font-medium text-sm gap-2">
-                        Подробнее
-                        <ArrowRight className="w-4 h-4" />
-                      </span>
-                      <div className="flex gap-1">
-                        {filteredServices.map((_, i) => (
-                          <div 
-                            key={i} 
-                            className={`w-1.5 h-1.5 rounded-full transition-all ${
-                              i === index ? 'bg-primary-500 w-4' : 'bg-neutral-300'
-                            }`}
-                          />
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </motion.div>
-              )
-            })}
-          </div>
-          <div className="text-center mt-2 text-xs text-neutral-500">
-            Свайп для просмотра →
-          </div>
-        </div>
-
-        {/* Desktop: grid */}
-        <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-          {filteredServices.map((service, index) => {
+          {services.map((service) => {
             const Icon = service.icon
+            const isActive = activeTab === service.id
             return (
-              <motion.div
+              <button
                 key={service.id}
-                initial={{ opacity: 0, y: 50 }}
-                animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ delay: index * 0.1, duration: 0.8, type: 'spring', stiffness: 100 }}
-                whileHover={{ y: -8, transition: { type: 'spring', stiffness: 300 } }}
-                whileTap={{ scale: 0.98 }}
-                onClick={() => setSelectedService(service.id)}
-                className="glass-card rounded-xl md:rounded-2xl p-5 md:p-8 cursor-pointer group relative overflow-hidden touch-interactive"
+                onClick={() => setActiveTab(service.id)}
+                className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
+                  isActive
+                    ? 'bg-white border border-neutral-300 shadow-sm text-neutral-900'
+                    : 'bg-neutral-100/70 hover:bg-neutral-100 text-neutral-600'
+                }`}
               >
-                <div className="absolute inset-0 bg-gradient-to-br from-neutral-900/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                <div className="relative z-10">
-                  <motion.div
-                    className="w-12 h-12 md:w-16 md:h-16 rounded-xl md:rounded-2xl bg-primary-500/10 flex items-center justify-center mb-4 md:mb-6 group-hover:bg-primary-500/20 transition-colors"
-                    whileHover={{ scale: 1.08 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    <Icon className="w-6 h-6 md:w-8 md:h-8 text-primary-500" />
-                  </motion.div>
-                  <h3 className="text-lg md:text-xl font-bold text-neutral-900 mb-2 md:mb-3 group-hover:text-primary-500 transition-colors">
-                    {service.title}
-                  </h3>
-                  <p className="text-sm md:text-base text-neutral-600 mb-3 md:mb-4">{service.description}</p>
-                  <span className="inline-flex items-center text-primary-500 font-medium text-sm md:text-base gap-2 group-hover:gap-3 transition-all">
-                    Подробнее
-                    <ArrowRight className="w-4 h-4 md:w-5 md:h-5" />
-                  </span>
-                </div>
-              </motion.div>
+                <Icon className="w-4 h-4" />
+                <span>{service.title}</span>
+              </button>
             )
           })}
-        </div>
-      </div>
-
-      {/* Service detail modal */}
-      {selectedService && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
-          onClick={() => setSelectedService(null)}
-        >
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.9, y: 20 }}
-            onClick={(e) => e.stopPropagation()}
-            className="glass-card-strong rounded-3xl p-8 md:p-12 max-w-2xl w-full max-h-[90vh] overflow-y-auto"
-          >
-            {(() => {
-              const service = services.find(s => s.id === selectedService)
-              if (!service) return null
-              const Icon = service.icon
-              return (
-                <>
-                  <div className="flex items-start justify-between mb-6">
-                    <div className="flex items-center gap-4">
-                      <div className="w-16 h-16 rounded-2xl bg-primary-500/10 flex items-center justify-center">
-                        <Icon className="w-8 h-8 text-primary-500" />
-                      </div>
-                      <div>
-                        <h3 className="text-2xl font-bold text-neutral-900 mb-2">{service.title}</h3>
-                        <span className="text-sm text-primary-500 font-medium">{service.category}</span>
-                      </div>
-                    </div>
-                    <button
-                      onClick={() => setSelectedService(null)}
-                      className="w-10 h-10 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center transition-colors"
-                    >
-                      <X className="w-5 h-5 text-neutral-600" />
-                    </button>
-                  </div>
-                  <p className="text-lg text-neutral-700 leading-relaxed mb-6">{service.details}</p>
-                  <button
-                    onClick={() => {
-                      setSelectedService(null)
-                      document.getElementById('final-cta')?.scrollIntoView({ behavior: 'smooth' })
-                    }}
-                    className="btn-primary w-full"
-                  >
-                    Получить расчёт
-                  </button>
-                </>
-              )
-            })()}
-          </motion.div>
         </motion.div>
-      )}
+
+        {/* Контент справа */}
+        <motion.div
+          key={activeTab}
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.4 }}
+          className="grid md:grid-cols-2 gap-8 items-start"
+        >
+          {/* Левая часть - описание */}
+          <div className="space-y-4">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-12 h-12 rounded-xl bg-red-50 flex items-center justify-center">
+                {(() => {
+                  const Icon = activeService.icon
+                  return <Icon className="w-6 h-6 text-red-600" />
+                })()}
+              </div>
+              <h3 className="text-2xl font-semibold text-neutral-900">
+                {activeService.title}
+              </h3>
+            </div>
+            <p className="text-base md:text-lg text-neutral-600 leading-relaxed">
+              {activeService.description}
+            </p>
+          </div>
+
+          {/* Правая часть - буллеты */}
+          <div className="bg-white border border-neutral-200/60 rounded-2xl p-6 shadow-[0_8px_20px_rgba(0,0,0,0.05)]">
+            <h4 className="font-semibold text-neutral-900 mb-4">Что входит:</h4>
+            <ul className="space-y-3">
+              {activeService.bullets.map((bullet, index) => (
+                <li key={index} className="flex items-start gap-3">
+                  <div className="w-5 h-5 rounded-full bg-red-50 flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <div className="w-2 h-2 rounded-full bg-red-600" />
+                  </div>
+                  <span className="text-sm text-neutral-600 leading-relaxed">{bullet}</span>
+                </li>
+              ))}
+            </ul>
+            <button
+              onClick={() => {
+                document.getElementById('final-cta')?.scrollIntoView({ behavior: 'smooth' })
+              }}
+              className="mt-6 w-full btn-primary flex items-center justify-center gap-2"
+            >
+              Получить расчёт
+              <ArrowRight className="w-4 h-4" />
+            </button>
+          </div>
+        </motion.div>
+      </div>
     </section>
   )
 }
-

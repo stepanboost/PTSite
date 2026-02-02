@@ -8,6 +8,75 @@ import Image from 'next/image'
 
 const cases = [
   {
+    title: 'Lynk&Co 900, комплектация Ultra',
+    description: 'Полный цикл импорта из Китая с комплексной подготовкой под ключ',
+    before: 'Заказ автомобиля из Китая',
+    after: 'Готовый премиум-автомобиль с полной защитой и русификацией',
+    duration: '14 дней',
+    cost: '7 200 000₽ под ключ',
+    origin: 'Китай',
+    services: [
+      'Импорт из Китая',
+      'Оклейка кузова защитной пленкой',
+      'Шумоизоляция',
+      'Антикоррозийная обработка кузова',
+      'Русификация',
+    ],
+    images: [
+      '/image/case/lynk&co/photo_2026-02-02 16.50.40.jpeg',
+      '/image/case/lynk&co/photo_2026-02-02 16.50.43.jpeg',
+      '/image/case/lynk&co/photo_2026-02-02 16.50.46.jpeg',
+      '/image/case/lynk&co/photo_2026-02-02 16.50.50.jpeg',
+    ],
+  },
+  {
+    title: 'Voyah Free 2024, пробег 13000 км',
+    description: 'Импорт из Китая с полной подготовкой под ключ. Автомобиль застрахован и оформлена расширенная гарантия',
+    before: 'Автомобиль в Китае, пробег 13000 км',
+    after: 'Готовый автомобиль с полной защитой, русификацией и страховкой',
+    duration: '29 дней',
+    cost: '3 700 000₽ под ключ',
+    origin: 'Китай',
+    services: [
+      'Импорт из Китая',
+      'Оклейка передней части кузова защитной пленкой',
+      'Шумоизоляция',
+      'ТО 0',
+      'Русификация и приложения',
+      'Установка защиты днища',
+      'КАСКО + ОСАГО',
+      'Расширенная гарантия',
+    ],
+    images: [
+      '/image/case/voyah/voyah-01.jpg',
+      '/image/case/voyah/voyah-02.jpg',
+      '/image/case/voyah/voyah-03.jpg',
+      '/image/case/voyah/voyah-04.jpg',
+      '/image/case/voyah/voyah-05.jpg',
+      '/image/case/voyah/voyah-06.jpg',
+    ],
+  },
+  {
+    title: 'Mercedes-AMG G 63 6x6, 2021',
+    description: 'Импорт премиального внедорожника из Германии с полной подготовкой под ключ',
+    before: 'Автомобиль в Германии',
+    after: 'Готовый премиум-внедорожник с полной подготовкой',
+    duration: '30 дней',
+    cost: '870 000€ под ключ',
+    origin: 'Германия',
+    services: [
+      'Импорт из Германии',
+      'Таможенное оформление',
+      'Подготовка под ключ',
+      'Полный пакет документов',
+    ],
+    images: [
+      '/image/case/mers/photo_2026-02-02 16.54.10.jpeg',
+      '/image/case/mers/photo_2026-02-02 16.54.11.jpeg',
+      '/image/case/mers/photo_2026-02-02 16.54.12.jpeg',
+    ],
+  },
+  {
     title: 'Zeekr 9X комплектация MAX',
     description: 'Полный цикл импорта из Китая с комплексной подготовкой под ключ',
     before: 'Заказ автомобиля из Китая',
@@ -36,36 +105,6 @@ const cases = [
       '/image/case/zeeker/zeekr-07.jpeg',
     ],
   },
-  {
-    title: 'Доработка и улучшение BYD Han',
-    description: 'Комплексная доработка: шумоизоляция, улучшенная оптика, сигнализация, антикор',
-    before: 'Базовый автомобиль без дополнительных опций',
-    after: 'Премиум-уровень комфорта и защиты',
-    duration: '12 дней',
-    cost: 'Оптимальное соотношение цена/качество',
-    services: ['Шумоизоляция', 'Оптика', 'Сигнализация', 'Антикор'],
-    images: null,
-  },
-  {
-    title: 'ТО и ремонт гибридной системы',
-    description: 'Диагностика и ремонт HV-системы, обновление ПО, замена компонентов',
-    before: 'Проблемы с гибридной системой, ошибки в ПО',
-    after: 'Полностью рабочая система, обновлённое ПО',
-    duration: '5 дней',
-    cost: 'Гарантия на работы 2 года',
-    services: ['Диагностика', 'Ремонт HV', 'Обновление ПО', 'Гарантия'],
-    images: null,
-  },
-  {
-    title: 'Комиссионная продажа',
-    description: 'Оценка, подготовка, размещение и продажа автомобиля по максимальной цене',
-    before: 'Автомобиль требует продажи, нет времени заниматься',
-    after: 'Автомобиль продан по максимальной цене',
-    duration: '21 день',
-    cost: 'На 15% выше рыночной стоимости',
-    services: ['Оценка', 'Подготовка', 'Размещение', 'Продажа'],
-    images: null,
-  },
 ]
 
 export default function Cases() {
@@ -88,15 +127,15 @@ export default function Cases() {
   }
 
   return (
-    <section ref={ref} className="section-padding bg-neutral-100 relative">
+    <section ref={ref} className="section-padding bg-white relative">
       <div className="container-custom">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8 }}
-          className="text-center mb-8 md:mb-16"
+          className="text-center mb-12"
         >
-          <h2 className="text-h2 md:text-h1 lg:text-display-sm font-bold text-neutral-900 mb-3 md:mb-4 text-balance">
+          <h2 className="section-title mb-4">
             Наши кейсы
           </h2>
           <p className="text-base md:text-xl text-neutral-600 max-w-3xl mx-auto text-balance">
@@ -118,7 +157,7 @@ export default function Cases() {
                   animate={isInView ? { opacity: 1, x: 0 } : {}}
                   transition={{ delay: index * 0.1, duration: 0.6 }}
                   whileTap={{ scale: 0.95 }}
-                  className="glass-card rounded-2xl overflow-hidden relative group min-w-[90vw] snap-center touch-interactive"
+                  className="card rounded-2xl overflow-hidden relative group min-w-[90vw] snap-center touch-interactive p-0"
                 >
                   <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-primary-500/10 to-transparent rounded-bl-[100px] z-10" />
                   
@@ -222,21 +261,21 @@ export default function Cases() {
                   </div>
 
                   <div className="grid grid-cols-2 gap-3 mb-4">
-                    <div className="glass-card rounded-lg p-3">
+                    <div className="bg-white border border-neutral-200/60 rounded-xl p-3">
                       <Calendar className="w-4 h-4 text-primary-500 mb-1" />
                       <div className="text-xs font-semibold text-neutral-900">{caseItem.duration}</div>
                     </div>
-                    <div className="glass-card rounded-lg p-3">
+                    <div className="bg-white border border-neutral-200/60 rounded-xl p-3">
                       <DollarSign className="w-4 h-4 text-primary-500 mb-1" />
                       <div className="text-xs font-semibold text-neutral-900 leading-tight">{caseItem.cost}</div>
                     </div>
                     {caseItem.origin && (
                       <>
-                        <div className="glass-card rounded-lg p-3">
+                        <div className="bg-white border border-neutral-200/60 rounded-xl p-3">
                           <MapPin className="w-4 h-4 text-primary-500 mb-1" />
                           <div className="text-xs font-semibold text-neutral-900">{caseItem.origin}</div>
                         </div>
-                        <div className="glass-card rounded-lg p-3">
+                        <div className="bg-white border border-neutral-200/60 rounded-xl p-3">
                           <Package className="w-4 h-4 text-primary-500 mb-1" />
                           <div className="text-xs font-semibold text-neutral-900">Под ключ</div>
                         </div>
@@ -283,7 +322,7 @@ export default function Cases() {
                 transition={{ delay: index * 0.15, duration: 0.8, type: 'spring', stiffness: 100 }}
                 whileHover={{ y: -8 }}
                 whileTap={{ scale: 0.98 }}
-                className="glass-card rounded-xl md:rounded-2xl overflow-hidden relative group touch-interactive"
+                className="card rounded-xl md:rounded-2xl overflow-hidden relative group touch-interactive p-0"
               >
                 <div className="absolute inset-0 bg-gradient-to-br from-neutral-900/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity z-10 pointer-events-none" />
                 
@@ -389,11 +428,11 @@ export default function Cases() {
                 </div>
                 {caseItem.origin && (
                   <>
-                    <div className="glass-card rounded-lg p-3">
+                    <div className="bg-white border border-neutral-200/60 rounded-xl p-3">
                       <MapPin className="w-4 h-4 text-primary-500 mb-1" />
                       <div className="text-sm font-semibold text-neutral-900">{caseItem.origin}</div>
                     </div>
-                    <div className="glass-card rounded-lg p-3">
+                    <div className="bg-white border border-neutral-200/60 rounded-xl p-3">
                       <Package className="w-4 h-4 text-primary-500 mb-1" />
                       <div className="text-sm font-semibold text-neutral-900">Под ключ</div>
                     </div>

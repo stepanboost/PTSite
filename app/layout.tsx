@@ -34,7 +34,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="antialiased bg-neutral-50 text-neutral-900">
+      <body className="antialiased bg-neutral-50 text-neutral-900" style={{ position: 'relative' }}>
         {children}
       </body>
     </html>

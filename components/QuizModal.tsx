@@ -45,7 +45,7 @@ const allQuizSteps: QuizStep[] = [
       'Китай',
       'Европа',
       'Япония',
-      'Россия',
+      'Корея',
       'Ещё не определился',
     ],
     condition: (answers: string[]) => answers[0]?.includes('Импорт') || answers[0]?.includes('Несколько'),
@@ -236,7 +236,7 @@ export default function QuizModal({ isOpen, onClose }: QuizModalProps) {
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.9, y: 20 }}
           onClick={(e) => e.stopPropagation()}
-          className="glass-card-strong rounded-3xl p-6 md:p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+          className="bg-white border border-neutral-200/60 rounded-3xl p-6 md:p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-[0_10px_30px_rgba(0,0,0,0.06)]"
         >
           {isSubmitted ? (
             <div className="text-center py-8">
@@ -258,9 +258,9 @@ export default function QuizModal({ isOpen, onClose }: QuizModalProps) {
                   <div className="text-sm text-neutral-600 mb-1">
                     Шаг {currentStep + 1} из {totalSteps}
                   </div>
-                  <div className="w-full h-2 bg-neutral-200 rounded-full overflow-hidden">
+                  <div className="w-full h-2 bg-white border border-neutral-200 rounded-full overflow-hidden">
                     <motion.div
-                      className="h-full bg-primary-500 rounded-full"
+                      className="h-full bg-red-600 rounded-full"
                       initial={{ width: 0 }}
                       animate={{ width: `${((currentStep + 1) / totalSteps) * 100}%` }}
                       transition={{ duration: 0.3 }}
@@ -269,7 +269,7 @@ export default function QuizModal({ isOpen, onClose }: QuizModalProps) {
                 </div>
                 <button
                   onClick={onClose}
-                  className="w-10 h-10 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center transition-colors ml-4"
+                  className="w-10 h-10 rounded-full bg-white border border-neutral-200/60 hover:bg-neutral-50 flex items-center justify-center transition-colors ml-4"
                 >
                   <X className="w-5 h-5 text-neutral-600" />
                 </button>
@@ -294,7 +294,7 @@ export default function QuizModal({ isOpen, onClose }: QuizModalProps) {
                         onClick={() => handleSelect(option)}
                         whileHover={{ scale: 1.02, x: 4 }}
                         whileTap={{ scale: 0.98 }}
-                        className="w-full glass-card rounded-2xl p-4 text-left hover:bg-neutral-100/80 transition-colors"
+                        className="w-full bg-white border border-neutral-200/60 rounded-xl p-4 text-left hover:bg-white/80 transition-colors"
                       >
                         {option}
                       </motion.button>
@@ -308,7 +308,7 @@ export default function QuizModal({ isOpen, onClose }: QuizModalProps) {
                     placeholder={currentQuestion.placeholder}
                     value={answers[allQuizSteps.findIndex(s => s === currentQuestion)] || ''}
                     onChange={(e) => handleInputChange(e.target.value)}
-                    className="w-full glass-card rounded-2xl p-4 text-neutral-900 placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-primary-500"
+                    className="input-field w-full"
                   />
                 )}
 
@@ -336,7 +336,7 @@ export default function QuizModal({ isOpen, onClose }: QuizModalProps) {
                             value={contactData.phone}
                             onChange={(e) => handlePhoneChange(e.target.value)}
                             required={field.required}
-                            className="w-full glass-card rounded-2xl p-4 text-neutral-900 placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-primary-500"
+                            className="input-field w-full"
                             placeholder="+7 (XXX) XXX-XX-XX"
                           />
                         ) : (
@@ -347,7 +347,7 @@ export default function QuizModal({ isOpen, onClose }: QuizModalProps) {
                               setContactData({ ...contactData, [field.name]: e.target.value })
                             }
                             required={field.required}
-                            className="w-full glass-card rounded-2xl p-4 text-neutral-900 placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-primary-500"
+                            className="input-field w-full"
                             placeholder={field.label}
                           />
                         )}
