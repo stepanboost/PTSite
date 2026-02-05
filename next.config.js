@@ -1,9 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  output: 'export',
   reactStrictMode: true,
   images: {
     domains: ['images.unsplash.com'],
-    unoptimized: false,
+    unoptimized: true,
   },
   // Меньше нагрузка на file watcher — меньше шансов на EMFILE
   webpack: (config, { dev }) => {

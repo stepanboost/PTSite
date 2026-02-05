@@ -37,9 +37,9 @@ const cars = [
     id: 3,
     brand: 'Zeekr',
     model: '9X MAX',
-    year: 2024,
+    year: 2025,
     price: '12 500 000₽',
-    location: 'Москва',
+    location: 'Санкт-Петербург',
     status: 'Раскупили',
     features: ['MAX', 'Полная подготовка', 'Гарантия'],
     images: [
