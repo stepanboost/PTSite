@@ -44,9 +44,9 @@ const steps: Step[] = [
     title: 'Выполнение работ',
     description: 'Импорт, адаптация, улучшения, сервис — всё на нашем сервисе. Контроль качества на каждом этапе.',
     bullets: [
-      'Импорт и доставка',
-      'Адаптация под РФ',
-      'Контроль качества',
+      'Подбор / логистика / таможенное оформление',
+      'Постановка на учёт и подготовка к эксплуатации',
+      'Русификация и установка допоборудования',
     ],
   },
   {
@@ -55,7 +55,7 @@ const steps: Step[] = [
     description: 'Получаете готовый автомобиль с полным пакетом документов, гарантией и постоянной поддержкой.',
     bullets: [
       'Финальный осмотр',
-      'Гарантия на всё',
+      'Гарантия на авто и работы',
       'Постоянная поддержка',
     ],
   },
@@ -74,7 +74,7 @@ export default function HowWeWork() {
   const lineHeight = useTransform(scrollYProgress, [0, 1], ['0%', '100%'])
 
   return (
-    <section ref={ref} className="section-padding bg-white relative overflow-hidden">
+    <section id="how-we-work" ref={ref} className="section-padding bg-white relative overflow-hidden">
       <div className="container-custom">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -163,7 +163,7 @@ export default function HowWeWork() {
             </div>
             <div className="hidden md:block w-px h-12 bg-neutral-300" />
             <div className="text-center md:text-left">
-              <div className="text-sm text-neutral-500 mb-1">Гарантия на всё</div>
+              <div className="text-sm text-neutral-500 mb-1">Гарантия на авто и работы</div>
               <div className="text-3xl font-semibold text-neutral-900">До 3 лет</div>
             </div>
           </div>

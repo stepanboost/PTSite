@@ -11,7 +11,7 @@ interface QuizModalProps {
 
 interface QuizStep {
   question: string
-  type: 'select' | 'input' | 'contact'
+  type: 'select' | 'input' | 'contact' | 'multi-select'
   options?: string[]
   placeholder?: string
   fields?: Array<{
@@ -26,65 +26,20 @@ interface QuizStep {
 
 const allQuizSteps: QuizStep[] = [
   {
-    question: 'Какая услуга вас интересует?',
-    type: 'select',
-    options: [
-      'Импорт/покупка автомобиля',
-      'Русификация и адаптация',
-      'Доработки и улучшения',
-      'ТО и ремонт',
-      'Гарантия и поддержка',
-      'Комиссионная продажа',
-      'Несколько услуг',
-    ],
-  },
-  {
-    question: 'Откуда планируете импортировать?',
-    type: 'select',
-    options: [
-      'Китай',
-      'Европа',
-      'Япония',
-      'Корея',
-      'Ещё не определился',
-    ],
-    condition: (answers: string[]) => answers[0]?.includes('Импорт') || answers[0]?.includes('Несколько'),
-  },
-  {
-    question: 'Какая марка/модель вас интересует?',
+    question: 'Какой автомобиль?',
     type: 'input',
-    placeholder: 'Например: Tesla Model Y, BYD Han...',
-    condition: (answers: string[]) => {
-      const firstAnswer = answers[0]
-      return firstAnswer?.includes('Импорт') || 
-             firstAnswer?.includes('Русификация') || 
-             firstAnswer?.includes('Доработки') ||
-             firstAnswer?.includes('Несколько')
-    },
+    placeholder: 'Марка и модель (например: Tesla Model Y, BYD Han) или нажмите "Не знаю"',
   },
   {
-    question: 'Какой у вас бюджет?',
-    type: 'select',
+    question: 'Что интересует?',
+    type: 'multi-select',
     options: [
-      'До 2 млн руб.',
-      '2-5 млн руб.',
-      '5-10 млн руб.',
-      'Свыше 10 млн руб.',
-      'Нужна консультация',
-    ],
-    skipIf: (answers: string[]) => {
-      // Пропускаем вопрос о бюджете для ТО и ремонта
-      return answers[0]?.includes('ТО и ремонт')
-    },
-  },
-  {
-    question: 'Какие сроки важны для вас?',
-    type: 'select',
-    options: [
-      'Как можно скорее',
-      '1-2 месяца',
-      '2-4 месяца',
-      'Не критично',
+      'Импорт/покупка',
+      'Русификация',
+      'Адаптация',
+      'Доработки',
+      'Сервис',
+      'Продажа',
     ],
   },
   {
@@ -93,8 +48,6 @@ const allQuizSteps: QuizStep[] = [
     fields: [
       { name: 'name', label: 'Ваше имя', type: 'text', required: true },
       { name: 'phone', label: 'Телефон', type: 'tel', required: true },
-      { name: 'email', label: 'Email (необязательно)', type: 'email', required: false },
-      { name: 'comment', label: 'Комментарий', type: 'textarea', required: false },
     ],
   },
 ]
@@ -102,6 +55,7 @@ const allQuizSteps: QuizStep[] = [
 export default function QuizModal({ isOpen, onClose }: QuizModalProps) {
   const [currentStep, setCurrentStep] = useState(0)
   const [answers, setAnswers] = useState<string[]>([])
+  const [selectedServices, setSelectedServices] = useState<string[]>([])
   const [contactData, setContactData] = useState({
     name: '',
     phone: '+7 ',
@@ -110,35 +64,8 @@ export default function QuizModal({ isOpen, onClose }: QuizModalProps) {
   })
   const [isSubmitted, setIsSubmitted] = useState(false)
 
-  // Фильтруем шаги на основе условий
-  const visibleSteps = useMemo(() => {
-    const steps: QuizStep[] = []
-    const tempAnswers: string[] = []
-    
-    for (const step of allQuizSteps) {
-      // Проверяем условие показа шага
-      if (step.condition && !step.condition(tempAnswers)) {
-        continue
-      }
-      
-      // Проверяем условие пропуска шага
-      if (step.skipIf && step.skipIf(tempAnswers)) {
-        continue
-      }
-      
-      steps.push(step)
-      
-      // Если это не последний шаг, добавляем ответ в tempAnswers для проверки следующих шагов
-      if (step.type !== 'contact') {
-        const answerIndex = allQuizSteps.indexOf(step)
-        if (answers[answerIndex] !== undefined) {
-          tempAnswers.push(answers[answerIndex])
-        }
-      }
-    }
-    
-    return steps
-  }, [answers])
+  // Все шаги видны (3 шага)
+  const visibleSteps = allQuizSteps
 
   const currentQuestion = visibleSteps[currentStep]
   const isLastStep = currentStep === visibleSteps.length - 1
@@ -188,6 +115,16 @@ export default function QuizModal({ isOpen, onClose }: QuizModalProps) {
     setTimeout(() => handleNext(), 300)
   }
 
+  const handleMultiSelect = (value: string) => {
+    setSelectedServices(prev => {
+      if (prev.includes(value)) {
+        return prev.filter(v => v !== value)
+      } else {
+        return [...prev, value]
+      }
+    })
+  }
+
   const handleInputChange = (value: string) => {
     const originalIndex = allQuizSteps.findIndex(step => step === currentQuestion)
     if (originalIndex >= 0) {
@@ -209,12 +146,14 @@ export default function QuizModal({ isOpen, onClose }: QuizModalProps) {
   const handleSubmit = () => {
     // Здесь должна быть отправка данных на сервер
     console.log('Quiz answers:', answers)
+    console.log('Selected services:', selectedServices)
     console.log('Contact data:', contactData)
     setIsSubmitted(true)
     setTimeout(() => {
       onClose()
       setCurrentStep(0)
       setAnswers([])
+      setSelectedServices([])
       setContactData({ name: '', phone: '+7 ', email: '', comment: '' })
       setIsSubmitted(false)
     }, 2000)
@@ -303,13 +242,63 @@ export default function QuizModal({ isOpen, onClose }: QuizModalProps) {
                 )}
 
                 {currentQuestion.type === 'input' && (
-                  <input
-                    type="text"
-                    placeholder={currentQuestion.placeholder}
-                    value={answers[allQuizSteps.findIndex(s => s === currentQuestion)] || ''}
-                    onChange={(e) => handleInputChange(e.target.value)}
-                    className="input-field w-full"
-                  />
+                  <div className="space-y-3">
+                    <input
+                      type="text"
+                      placeholder={currentQuestion.placeholder}
+                      value={answers[0] || ''}
+                      onChange={(e) => {
+                        const newAnswers = [...answers]
+                        newAnswers[0] = e.target.value
+                        setAnswers(newAnswers)
+                      }}
+                      className="input-field w-full"
+                    />
+                    <button
+                      onClick={() => {
+                        const newAnswers = [...answers]
+                        newAnswers[0] = 'Не знаю'
+                        setAnswers(newAnswers)
+                        setTimeout(() => handleNext(), 300)
+                      }}
+                      className="w-full btn-secondary"
+                    >
+                      Не знаю
+                    </button>
+                  </div>
+                )}
+
+                {currentQuestion.type === 'multi-select' && (
+                  <div className="space-y-3">
+                    {currentQuestion.options?.map((option, index) => (
+                      <motion.button
+                        key={index}
+                        onClick={() => handleMultiSelect(option)}
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                        className={`w-full border rounded-xl p-4 text-left transition-colors ${
+                          selectedServices.includes(option)
+                            ? 'bg-red-50 border-red-600 text-red-900'
+                            : 'bg-white border-neutral-200/60 hover:bg-white/80'
+                        }`}
+                      >
+                        <div className="flex items-center gap-3">
+                          <div className={`w-5 h-5 rounded border-2 flex items-center justify-center ${
+                            selectedServices.includes(option)
+                              ? 'bg-red-600 border-red-600'
+                              : 'border-neutral-300'
+                          }`}>
+                            {selectedServices.includes(option) && (
+                              <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                              </svg>
+                            )}
+                          </div>
+                          <span>{option}</span>
+                        </div>
+                      </motion.button>
+                    ))}
+                  </div>
                 )}
 
                 {currentQuestion.type === 'contact' && (
@@ -367,12 +356,14 @@ export default function QuizModal({ isOpen, onClose }: QuizModalProps) {
                     Назад
                   </button>
                 )}
-                {currentQuestion.type !== 'select' && (
+                {(currentQuestion.type === 'input' || currentQuestion.type === 'multi-select' || currentQuestion.type === 'contact') && (
                   <button
                     onClick={handleNext}
                     disabled={
-                      currentQuestion.type === 'contact' &&
-                      (!contactData.name || !contactData.phone || contactData.phone === '+7 ')
+                      (currentQuestion.type === 'input' && !answers[0]) ||
+                      (currentQuestion.type === 'multi-select' && selectedServices.length === 0) ||
+                      (currentQuestion.type === 'contact' &&
+                      (!contactData.name || !contactData.phone || contactData.phone === '+7 '))
                     }
                     className="btn-primary flex items-center gap-2 ml-auto disabled:opacity-50 disabled:cursor-not-allowed"
                   >

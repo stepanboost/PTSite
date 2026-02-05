@@ -9,33 +9,32 @@ const contacts = [
   {
     icon: Phone,
     title: 'Телефон',
-    value: '+7 (XXX) XXX-XX-XX',
-    link: 'tel:+7XXXXXXXXXX',
+    value: '+7 (964) 342-16-44',
+    link: 'tel:+79643421644',
   },
   {
     icon: Mail,
-    title: 'Email',
-    value: 'info@provolta-service.ru',
-    link: 'mailto:info@provolta-service.ru',
+    title: 'E-mail',
+    value: 'sales@teamserviceprovolta.ru',
+    link: 'mailto:sales@teamserviceprovolta.ru',
   },
   {
     icon: MapPin,
     title: 'Адрес',
-    value: 'Москва, ул. Примерная, д. 1',
-    link: '#',
+    value: 'Санкт-Петербург, ул. Парашютная, 51, стр. 1, секция А6',
+    link: 'https://yandex.ru/maps/?text=Санкт-Петербург,+ул.+Парашютная,+51',
   },
   {
     icon: Clock,
     title: 'Режим работы',
-    value: 'Пн-Пт: 9:00 - 20:00, Сб-Вс: 10:00 - 18:00',
+    value: '10:00–20:00 каждый день',
     link: '#',
   },
 ]
 
 const messengers = [
-  { name: 'WhatsApp', icon: '💬', link: '#' },
-  { name: 'Telegram', icon: '✈️', link: '#' },
-  { name: 'Viber', icon: '📱', link: '#' },
+  { name: 'Telegram', icon: '✈️', link: 'https://t.me/teamserviceprovolta' },
+  { name: 'WhatsApp', icon: '💬', link: 'https://wa.me/79643421644' },
 ]
 
 export default function Contacts() {
@@ -122,7 +121,7 @@ export default function Contacts() {
                 >
                   <option value="">Выберите услугу</option>
                   <option value="import">Импорт</option>
-                  <option value="adaptation">Адаптация</option>
+                  <option value="adaptation">Русификация</option>
                   <option value="service">Сервис</option>
                   <option value="other">Другое</option>
                 </select>
@@ -206,28 +205,26 @@ export default function Contacts() {
                 ))}
               </div>
             </div>
-
-            {/* Ответим за 60 минут */}
-            <div className="bg-red-50 border border-red-100 rounded-xl p-4 text-center">
-              <p className="text-sm font-semibold text-red-600 mb-1">Ответим за 60 минут</p>
-              <p className="text-xs text-neutral-600">Мы всегда на связи</p>
-            </div>
           </motion.div>
         </div>
 
-        {/* Map placeholder */}
+        {/* Яндекс карта */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ delay: 0.6, duration: 0.8 }}
           className="mt-12 rounded-2xl overflow-hidden shadow-[0_8px_20px_rgba(0,0,0,0.05)]"
         >
-          <div className="w-full h-64 bg-neutral-100 flex items-center justify-center">
-            <div className="text-center">
-              <MapPin className="w-12 h-12 text-neutral-400 mx-auto mb-3" />
-              <p className="text-sm text-neutral-500">Карта будет здесь</p>
-            </div>
-          </div>
+          <iframe
+            src="https://yandex.ru/map-widget/v1/?text=Санкт-Петербург,+ул.+Парашютная,+51,+стр.+1,+секция+А6&z=16"
+            width="100%"
+            height="400"
+            frameBorder="0"
+            allowFullScreen
+            style={{ border: 0 }}
+            className="w-full"
+            title="Карта расположения офиса"
+          />
         </motion.div>
       </div>
     </section>

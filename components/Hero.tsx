@@ -1,14 +1,15 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { ArrowRight, Shield, FileCheck, Clock } from 'lucide-react'
+import { ArrowRight, Shield, FileCheck, Clock, FileText } from 'lucide-react'
 import Image from 'next/image'
 
 interface HeroProps {
   onOpenQuiz: () => void
+  onOpenContract: () => void
 }
 
-export default function Hero({ onOpenQuiz }: HeroProps) {
+export default function Hero({ onOpenQuiz, onOpenContract }: HeroProps) {
   return (
     <section className="section-padding bg-white relative overflow-hidden">
       <div className="container-custom">
@@ -20,28 +21,11 @@ export default function Hero({ onOpenQuiz }: HeroProps) {
             transition={{ duration: 0.8 }}
             className="space-y-8 md:space-y-6 text-center"
           >
-            {/* Логотип */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.2, duration: 0.6 }}
-              className="mb-8 md:mb-6 flex justify-center"
-            >
-              <Image
-                src="/logo.png"
-                alt="PROVOLTA & TEAM SERVICE"
-                width={300}
-                height={100}
-                className="h-auto w-auto max-w-[280px]"
-                priority
-              />
-            </motion.div>
-
             {/* H1 */}
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3, duration: 0.6 }}
+              transition={{ delay: 0.2, duration: 0.6 }}
               className="text-3xl md:text-5xl font-semibold tracking-tight text-neutral-900 leading-tight px-2 md:px-0 mb-2"
             >
               Импорт и сервис автомобилей под ключ
@@ -51,17 +35,17 @@ export default function Hero({ onOpenQuiz }: HeroProps) {
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4, duration: 0.6 }}
+              transition={{ delay: 0.3, duration: 0.6 }}
               className="text-sm md:text-lg text-neutral-600 leading-relaxed px-4 md:px-0 max-w-xl mx-auto mb-2"
             >
-              Подбор → проверка → доставка → адаптация → обслуживание → гарантия. Договор, фикс-смета, контроль качества.
+              Полный цикл работы с премиальными авто: подбор → проверка → доставка → таможня → адаптация → обслуживание. С договором и прозрачными документами.
             </motion.p>
 
             {/* Trust badges - премиальный дизайн */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5, duration: 0.6 }}
+              transition={{ delay: 0.4, duration: 0.6 }}
               className="w-full"
             >
               {/* Мобильная версия - премиум дизайн */}
@@ -71,7 +55,7 @@ export default function Hero({ onOpenQuiz }: HeroProps) {
                     {[
                       { icon: Clock, text: 'Работаем с 2020' },
                       { icon: FileCheck, text: 'Договор и смета' },
-                      { icon: Shield, text: 'Гарантия на работы' },
+                      { icon: Shield, text: 'Гарантия на авто и работы' },
                     ].map((pill, index) => {
                       const Icon = pill.icon
                       return (
@@ -80,13 +64,13 @@ export default function Hero({ onOpenQuiz }: HeroProps) {
                           initial={{ opacity: 0, y: 10 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ 
-                            delay: 0.5 + index * 0.08, 
+                            delay: 0.4 + index * 0.08, 
                             duration: 0.4,
                             ease: [0.16, 1, 0.3, 1]
                           }}
                           className="flex-1 flex flex-col items-center text-center relative"
                         >
-                          <div className="w-11 h-11 rounded-xl bg-neutral-50 flex items-center justify-center mb-3">
+                          <div className="w-11 h-11 rounded-xl bg-red-50 flex items-center justify-center mb-3">
                             <Icon className="w-5 h-5 text-red-600" strokeWidth={2.5} />
                           </div>
                           <span className="text-xs font-semibold text-neutral-900 leading-tight">
@@ -107,7 +91,7 @@ export default function Hero({ onOpenQuiz }: HeroProps) {
                 {[
                   { icon: Clock, text: 'Работаем с 2020' },
                   { icon: FileCheck, text: 'Договор и смета' },
-                  { icon: Shield, text: 'Гарантия на работы' },
+                  { icon: Shield, text: 'Гарантия на авто и работы' },
                 ].map((pill, index) => {
                   const Icon = pill.icon
                   return (
@@ -121,6 +105,22 @@ export default function Hero({ onOpenQuiz }: HeroProps) {
                   )
                 })}
               </div>
+            </motion.div>
+
+            {/* Доверие: Посмотреть пример договора */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5, duration: 0.6 }}
+              className="flex justify-center"
+            >
+              <button
+                onClick={onOpenContract}
+                className="flex items-center gap-2 text-sm text-neutral-600 hover:text-red-600 transition-colors group"
+              >
+                <FileText className="w-4 h-4 group-hover:scale-110 transition-transform" />
+                <span>Посмотреть пример договора</span>
+              </button>
             </motion.div>
 
             {/* CTA Buttons */}

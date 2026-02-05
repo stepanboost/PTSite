@@ -2,18 +2,18 @@
 
 import { motion } from 'framer-motion'
 import { useInView } from 'framer-motion'
-import { useRef, useState } from 'react'
-import { Car, Calendar, DollarSign, CheckCircle, MapPin, Package } from 'lucide-react'
+import { useRef, useState, useEffect } from 'react'
+import { Car, Calendar, CheckCircle, MapPin, Coins } from 'lucide-react'
 import Image from 'next/image'
 
 const cases = [
   {
-    title: 'Lynk&Co 900, комплектация Ultra',
-    description: 'Полный цикл импорта из Китая с комплексной подготовкой под ключ',
+    title: 'Lynk&Co 900, Ultra',
+    description: 'Полный цикл импорта из Китая с комплексной подготовкой',
     before: 'Заказ автомобиля из Китая',
     after: 'Готовый премиум-автомобиль с полной защитой и русификацией',
     duration: '14 дней',
-    cost: '7 200 000₽ под ключ',
+    cost: '7 200 000₽',
     origin: 'Китай',
     services: [
       'Импорт из Китая',
@@ -31,11 +31,11 @@ const cases = [
   },
   {
     title: 'Voyah Free 2024, пробег 13000 км',
-    description: 'Импорт из Китая с полной подготовкой под ключ. Автомобиль застрахован и оформлена расширенная гарантия',
+    description: 'Импорт из Китая с полной подготовкой. Автомобиль застрахован и оформлена расширенная гарантия',
     before: 'Автомобиль в Китае, пробег 13000 км',
     after: 'Готовый автомобиль с полной защитой, русификацией и страховкой',
     duration: '29 дней',
-    cost: '3 700 000₽ под ключ',
+    cost: '3 700 000₽',
     origin: 'Китай',
     services: [
       'Импорт из Китая',
@@ -58,16 +58,16 @@ const cases = [
   },
   {
     title: 'Mercedes-AMG G 63 6x6, 2021',
-    description: 'Импорт премиального внедорожника из Германии с полной подготовкой под ключ',
+    description: 'Импорт премиального внедорожника из Германии с полной подготовкой',
     before: 'Автомобиль в Германии',
     after: 'Готовый премиум-внедорожник с полной подготовкой',
     duration: '30 дней',
-    cost: '870 000€ под ключ',
+    cost: '870 000€',
     origin: 'Германия',
     services: [
       'Импорт из Германии',
       'Таможенное оформление',
-      'Подготовка под ключ',
+      'Полная подготовка',
       'Полный пакет документов',
     ],
     images: [
@@ -77,12 +77,12 @@ const cases = [
     ],
   },
   {
-    title: 'Zeekr 9X комплектация MAX',
-    description: 'Полный цикл импорта из Китая с комплексной подготовкой под ключ',
+    title: 'Zeekr 9X MAX',
+    description: 'Полный цикл импорта из Китая с комплексной подготовкой',
     before: 'Заказ автомобиля из Китая',
     after: 'Готовый премиум-автомобиль с полной защитой и гарантией',
     duration: '14 дней',
-    cost: '12 500 000₽ под ключ',
+    cost: '12 500 000₽',
     origin: 'Китай',
     services: [
       'Импорт из Китая',
@@ -111,6 +111,7 @@ export default function Cases() {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
   const [currentImageIndex, setCurrentImageIndex] = useState<{ [key: number]: number }>({})
+  const scrollContainerRef = useRef<HTMLDivElement>(null)
 
   const nextImage = (caseIndex: number, totalImages: number) => {
     setCurrentImageIndex(prev => ({
@@ -127,7 +128,7 @@ export default function Cases() {
   }
 
   return (
-    <section ref={ref} className="section-padding bg-white relative">
+    <section id="cases" ref={ref} className="section-padding bg-white relative">
       <div className="container-custom">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -145,7 +146,11 @@ export default function Cases() {
 
         {/* Mobile: horizontal scroll with preview */}
         <div className="md:hidden">
-          <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide pb-4 px-4 -mx-4">
+          <div 
+            ref={scrollContainerRef}
+            className="flex gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide pb-4 px-4 -mx-4"
+            style={{ scrollSnapType: 'x mandatory', WebkitOverflowScrolling: 'touch' }}
+          >
             {cases.map((caseItem, index) => {
               const currentImg = currentImageIndex[index] || 0
               const hasImages = caseItem.images && caseItem.images.length > 0
@@ -224,13 +229,25 @@ export default function Cases() {
                     )}
                     
                     <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
-                    <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1 text-xs font-semibold text-neutral-700 z-20">
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        if (scrollContainerRef.current) {
+                          const cardWidth = scrollContainerRef.current.offsetWidth / cases.length
+                          scrollContainerRef.current.scrollTo({
+                            left: index * (cardWidth + 16), // 16px gap
+                            behavior: 'smooth'
+                          })
+                        }
+                      }}
+                      className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1 text-xs font-semibold text-neutral-700 z-20 hover:bg-white transition-colors cursor-pointer"
+                    >
                       {index + 1}/{cases.length}
-                    </div>
+                    </button>
                   </div>
                   
                   {/* Content */}
-                  <div className="p-6 relative z-10">
+                  <div className="p-5 relative z-10">
                   
                   <div className="flex items-center gap-3 mb-3">
                     <div className="w-10 h-10 rounded-xl bg-primary-500/10 flex items-center justify-center flex-shrink-0">
@@ -241,9 +258,9 @@ export default function Cases() {
                     </h3>
                   </div>
                   
-                  <p className="text-sm text-neutral-600 mb-5 leading-relaxed">{caseItem.description}</p>
+                  <p className="text-sm text-neutral-600 mb-4 leading-relaxed">{caseItem.description}</p>
 
-                  <div className="space-y-3 mb-5">
+                  <div className="space-y-3 mb-4">
                     <div className="flex items-start gap-3 bg-red-50 border border-red-200 rounded-lg p-3">
                       <div className="w-2 h-2 rounded-full bg-red-500 mt-2 flex-shrink-0" />
                       <div>
@@ -251,10 +268,10 @@ export default function Cases() {
                         <div className="text-xs text-neutral-600">{caseItem.before}</div>
                       </div>
                     </div>
-                    <div className="flex items-start gap-3 bg-green-50 border border-green-200 rounded-lg p-3">
-                      <div className="w-2 h-2 rounded-full bg-green-500 mt-2 flex-shrink-0" />
+                    <div className="flex items-start gap-3 bg-neutral-50 border border-neutral-200/60 rounded-lg p-3">
+                      <div className="w-2 h-2 rounded-full bg-neutral-400 mt-2 flex-shrink-0" />
                       <div>
-                        <div className="text-xs font-semibold text-green-700 mb-1">ПОСЛЕ</div>
+                        <div className="text-xs font-semibold text-neutral-700 mb-1">ПОСЛЕ</div>
                         <div className="text-xs text-neutral-600">{caseItem.after}</div>
                       </div>
                     </div>
@@ -266,20 +283,14 @@ export default function Cases() {
                       <div className="text-xs font-semibold text-neutral-900">{caseItem.duration}</div>
                     </div>
                     <div className="bg-white border border-neutral-200/60 rounded-xl p-3">
-                      <DollarSign className="w-4 h-4 text-primary-500 mb-1" />
+                      <Coins className="w-4 h-4 text-primary-500 mb-1" />
                       <div className="text-xs font-semibold text-neutral-900 leading-tight">{caseItem.cost}</div>
                     </div>
                     {caseItem.origin && (
-                      <>
-                        <div className="bg-white border border-neutral-200/60 rounded-xl p-3">
-                          <MapPin className="w-4 h-4 text-primary-500 mb-1" />
-                          <div className="text-xs font-semibold text-neutral-900">{caseItem.origin}</div>
-                        </div>
-                        <div className="bg-white border border-neutral-200/60 rounded-xl p-3">
-                          <Package className="w-4 h-4 text-primary-500 mb-1" />
-                          <div className="text-xs font-semibold text-neutral-900">Под ключ</div>
-                        </div>
-                      </>
+                      <div className="bg-white border border-neutral-200/60 rounded-xl p-3">
+                        <MapPin className="w-4 h-4 text-primary-500 mb-1" />
+                        <div className="text-xs font-semibold text-neutral-900">{caseItem.origin}</div>
+                      </div>
                     )}
                   </div>
 
@@ -287,7 +298,7 @@ export default function Cases() {
                     {caseItem.services.map((service, i) => (
                       <span
                         key={i}
-                        className="px-2.5 py-1 rounded-full bg-primary-500/10 text-primary-500 text-xs font-medium border border-primary-500/20"
+                        className="px-2.5 py-1 rounded-full bg-red-50 text-red-700 text-xs font-medium border border-red-200/60"
                       >
                         {service}
                       </span>
@@ -392,15 +403,15 @@ export default function Cases() {
                 </div>
                 
                 {/* Content */}
-                <div className="p-6 md:p-8 relative z-10">
+                <div className="p-6 relative z-10">
                 
-                <h3 className="text-lg md:text-xl font-bold text-neutral-900 mb-3 md:mb-4 group-hover:text-primary-500 transition-colors">
+                <h3 className="text-lg md:text-xl font-bold text-neutral-900 mb-3 group-hover:text-primary-500 transition-colors">
                   {caseItem.title}
                 </h3>
                 
-                <p className="text-sm md:text-base text-neutral-600 mb-4 md:mb-6">{caseItem.description}</p>
+                <p className="text-sm md:text-base text-neutral-600 mb-4">{caseItem.description}</p>
 
-                <div className="space-y-3 md:space-y-4 mb-4 md:mb-6">
+                <div className="space-y-3 mb-4">
                   <div className="flex items-start gap-3">
                     <div className="w-2 h-2 rounded-full bg-red-400 mt-2 flex-shrink-0" />
                     <div>
@@ -409,7 +420,7 @@ export default function Cases() {
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
-                    <div className="w-2 h-2 rounded-full bg-green-400 mt-2 flex-shrink-0" />
+                    <div className="w-2 h-2 rounded-full bg-neutral-400 mt-2 flex-shrink-0" />
                     <div>
                       <div className="text-sm font-medium text-neutral-700 mb-1">После:</div>
                       <div className="text-sm text-neutral-600">{caseItem.after}</div>
@@ -418,25 +429,19 @@ export default function Cases() {
                 </div>
 
               <div className="grid grid-cols-2 gap-3 mb-4">
-                <div className="glass-card rounded-lg p-3">
+                <div className="bg-white border border-neutral-200/60 rounded-xl p-3">
                   <Calendar className="w-4 h-4 text-primary-500 mb-1" />
                   <div className="text-sm font-semibold text-neutral-900">{caseItem.duration}</div>
                 </div>
-                <div className="glass-card rounded-lg p-3">
-                  <DollarSign className="w-4 h-4 text-primary-500 mb-1" />
+                <div className="bg-white border border-neutral-200/60 rounded-xl p-3">
+                  <Coins className="w-4 h-4 text-primary-500 mb-1" />
                   <div className="text-sm font-semibold text-neutral-900">{caseItem.cost}</div>
                 </div>
                 {caseItem.origin && (
-                  <>
-                    <div className="bg-white border border-neutral-200/60 rounded-xl p-3">
-                      <MapPin className="w-4 h-4 text-primary-500 mb-1" />
-                      <div className="text-sm font-semibold text-neutral-900">{caseItem.origin}</div>
-                    </div>
-                    <div className="bg-white border border-neutral-200/60 rounded-xl p-3">
-                      <Package className="w-4 h-4 text-primary-500 mb-1" />
-                      <div className="text-sm font-semibold text-neutral-900">Под ключ</div>
-                    </div>
-                  </>
+                  <div className="bg-white border border-neutral-200/60 rounded-xl p-3">
+                    <MapPin className="w-4 h-4 text-primary-500 mb-1" />
+                    <div className="text-sm font-semibold text-neutral-900">{caseItem.origin}</div>
+                  </div>
                 )}
               </div>
 
@@ -444,7 +449,7 @@ export default function Cases() {
                 {caseItem.services.map((service, i) => (
                   <span
                     key={i}
-                    className="px-3 py-1 rounded-full bg-primary-500/10 text-primary-500 text-xs font-medium border border-primary-500/20"
+                    className="px-3 py-1 rounded-full bg-red-50 text-red-700 text-xs font-medium border border-red-200/60"
                   >
                     {service}
                   </span>

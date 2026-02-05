@@ -20,8 +20,8 @@ const trustPoints = [
   },
   {
     icon: FileCheck,
-    title: 'Гарантия 2 года',
-    description: 'На все работы даём расширенную гарантию. Бесплатное устранение любых дефектов.',
+    title: 'Гарантия до 3 лет',
+    description: 'Расширенная гарантия на автомобили и выполненные работы. Бесплатное устранение любых дефектов.',
   },
   {
     icon: Clock,
@@ -31,7 +31,7 @@ const trustPoints = [
   {
     icon: Eye,
     title: 'Прозрачность 24/7',
-    description: 'Видео с процесса работ, фото, чеки. Доступ к камерам сервиса онлайн.',
+    description: 'Фото- и видеофиксация на всех этапах. Видео с процесса работ, фото, чеки.',
   },
   {
     icon: CreditCard,
@@ -43,8 +43,8 @@ const trustPoints = [
 const metrics = [
   { value: '4+ года', label: 'Опыт работы' },
   { value: '24/7', label: 'Поддержка' },
-  { value: 'До 3 лет', label: 'Гарантия на работы' },
-  { value: 'Прозрачные условия', label: 'Договор и смета' },
+  { value: 'До 3 лет', label: 'Гарантия на авто и работы' },
+  { value: 'Договор', label: 'И прозрачная смета' },
 ]
 
 export default function TrustBlock() {
@@ -52,7 +52,7 @@ export default function TrustBlock() {
   const isInView = useInView(ref, { once: true, margin: '-100px' })
 
   return (
-    <section ref={ref} className="section-padding bg-white relative">
+    <section id="guarantee" ref={ref} className="section-padding bg-white relative">
       <div className="container-custom">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -64,7 +64,7 @@ export default function TrustBlock() {
             Почему выбирают нас
           </h2>
           <p className="text-base md:text-lg text-neutral-600 max-w-2xl mx-auto leading-relaxed">
-            7 лет работаем с китайскими автомобилями. Знаем все подводные камни импорта
+            Более 4 лет работаем с китайскими автомобилями. Знаем все подводные камни импорта
           </p>
         </motion.div>
 

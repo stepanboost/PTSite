@@ -8,6 +8,13 @@ export default function Footer() {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
 
+  const scrollToSection = (id: string) => {
+    const element = document.getElementById(id)
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' })
+    }
+  }
+
   return (
     <footer ref={ref} className="bg-white border-t border-neutral-200/60 text-neutral-600 py-8 md:py-12">
       <div className="container-custom px-4 md:px-6 lg:px-8">
@@ -29,34 +36,34 @@ export default function Footer() {
             <h4 className="text-neutral-900 font-semibold text-sm md:text-base mb-3 md:mb-4">Услуги</h4>
             <ul className="space-y-2 text-xs md:text-sm">
               <li>
-                  <a href="#services" className="hover:text-red-600 transition-colors block py-1 touch-interactive">
+                <button onClick={() => scrollToSection('services')} className="hover:text-red-600 transition-colors block py-1 touch-interactive text-left w-full">
                   Импорт/покупка
-                </a>
+                </button>
               </li>
               <li>
-                  <a href="#services" className="hover:text-red-600 transition-colors block py-1 touch-interactive">
+                <button onClick={() => scrollToSection('services')} className="hover:text-red-600 transition-colors block py-1 touch-interactive text-left w-full">
                   Русификация
-                </a>
+                </button>
               </li>
               <li>
-                  <a href="#services" className="hover:text-red-600 transition-colors block py-1 touch-interactive">
+                <button onClick={() => scrollToSection('services')} className="hover:text-red-600 transition-colors block py-1 touch-interactive text-left w-full">
                   Доработки
-                </a>
+                </button>
               </li>
               <li>
-                  <a href="#services" className="hover:text-red-600 transition-colors block py-1 touch-interactive">
+                <button onClick={() => scrollToSection('services')} className="hover:text-red-600 transition-colors block py-1 touch-interactive text-left w-full">
                   ТО и ремонт
-                </a>
+                </button>
               </li>
               <li>
-                  <a href="#services" className="hover:text-red-600 transition-colors block py-1 touch-interactive">
+                <button onClick={() => scrollToSection('guarantee')} className="hover:text-red-600 transition-colors block py-1 touch-interactive text-left w-full">
                   Гарантия
-                </a>
+                </button>
               </li>
               <li>
-                  <a href="#services" className="hover:text-red-600 transition-colors block py-1 touch-interactive">
+                <button onClick={() => scrollToSection('services')} className="hover:text-red-600 transition-colors block py-1 touch-interactive text-left w-full">
                   Продажа
-                </a>
+                </button>
               </li>
             </ul>
           </div>
@@ -65,24 +72,24 @@ export default function Footer() {
             <h4 className="text-neutral-900 font-semibold text-sm md:text-base mb-3 md:mb-4">Информация</h4>
             <ul className="space-y-2 text-xs md:text-sm">
               <li>
-                <a href="#contacts" className="hover:text-red-600 transition-colors block py-1 touch-interactive">
+                <button onClick={() => scrollToSection('contacts')} className="hover:text-red-600 transition-colors block py-1 touch-interactive text-left w-full">
                   Контакты
-                </a>
+                </button>
               </li>
               <li>
-                <a href="#process" className="hover:text-primary-500 transition-colors block py-1 touch-interactive">
+                <button onClick={() => scrollToSection('how-we-work')} className="hover:text-red-600 transition-colors block py-1 touch-interactive text-left w-full">
                   Процесс работы
-                </a>
+                </button>
               </li>
               <li>
-                <a href="#guarantee" className="hover:text-primary-500 transition-colors block py-1 touch-interactive">
+                <button onClick={() => scrollToSection('guarantee')} className="hover:text-red-600 transition-colors block py-1 touch-interactive text-left w-full">
                   Гарантия
-                </a>
+                </button>
               </li>
               <li>
-                <a href="#faq" className="hover:text-primary-500 transition-colors block py-1 touch-interactive">
+                <button onClick={() => scrollToSection('faq')} className="hover:text-red-600 transition-colors block py-1 touch-interactive text-left w-full">
                   FAQ
-                </a>
+                </button>
               </li>
             </ul>
           </div>
@@ -94,7 +101,7 @@ export default function Footer() {
           transition={{ delay: 0.2, duration: 0.8 }}
           className="border-t border-neutral-200 pt-6 md:pt-8 flex flex-col md:flex-row justify-between items-center gap-3 md:gap-4 text-xs md:text-sm text-neutral-500"
         >
-          <p className="text-center md:text-left">© 2024 PROVOLTA & TEAM SERVICE. Все права защищены.</p>
+          <p className="text-center md:text-left">© 2026 PROVOLTA & TEAM SERVICE. Все права защищены.</p>
           <div className="flex flex-col sm:flex-row gap-3 md:gap-6 text-center md:text-right">
             <a href="#" className="hover:text-red-600 transition-colors touch-interactive py-1">
               Политика конфиденциальности

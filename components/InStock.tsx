@@ -13,9 +13,9 @@ const cars = [
     model: 'A5 Long',
     year: 2025,
     price: '6 300 000₽',
-    location: 'Москва',
+    location: 'Санкт-Петербург',
     status: 'В наличии',
-    features: ['Максимальная комплектация', 'Полная адаптация', 'Гарантия'],
+    features: ['MAX', 'Полная адаптация', 'Гарантия'],
     images: [
       '/image/audi-a5.png',
     ],
@@ -36,12 +36,12 @@ const cars = [
   {
     id: 3,
     brand: 'Zeekr',
-    model: '9X комплектация MAX',
+    model: '9X MAX',
     year: 2024,
     price: '12 500 000₽',
     location: 'Москва',
     status: 'Раскупили',
-    features: ['Максимальная комплектация', 'Полная подготовка', 'Гарантия'],
+    features: ['MAX', 'Полная подготовка', 'Гарантия'],
     images: [
       '/image/case/zeeker/zeekr-009-01.jpeg',
       '/image/case/zeeker/zeekr-009-02.jpeg',
@@ -51,26 +51,16 @@ const cars = [
   },
 ]
 
-export default function InStock() {
+interface InStockProps {
+  onOpenQuiz: () => void
+}
+
+export default function InStock({ onOpenQuiz }: InStockProps) {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
   const [selectedCar, setSelectedCar] = useState<number | null>(null)
   const [currentImageIndex, setCurrentImageIndex] = useState<{ [key: number]: number }>({})
   const [filter, setFilter] = useState<'all' | 'in-stock' | 'pre-order'>('all')
-
-  const nextImage = (carId: number, totalImages: number) => {
-    setCurrentImageIndex(prev => ({
-      ...prev,
-      [carId]: ((prev[carId] || 0) + 1) % totalImages
-    }))
-  }
-
-  const prevImage = (carId: number, totalImages: number) => {
-    setCurrentImageIndex(prev => ({
-      ...prev,
-      [carId]: ((prev[carId] || 0) - 1 + totalImages) % totalImages
-    }))
-  }
 
   const filteredCars = filter === 'all' 
     ? cars 
@@ -91,7 +81,7 @@ export default function InStock() {
             Автомобили в наличии
           </h2>
           <p className="text-base md:text-lg text-neutral-600 max-w-3xl mx-auto leading-relaxed">
-            Готовые автомобили с полной адаптацией и гарантией. Можно забрать сегодня
+            Готовые автомобили с полной адаптацией и гарантией. Можно забрать сегодня — эти авто все 2025 год и все в СПб.
           </p>
         </motion.div>
 
@@ -136,7 +126,7 @@ export default function InStock() {
                   animate={isInView ? { opacity: 1, x: 0 } : {}}
                   transition={{ delay: index * 0.1, duration: 0.6 }}
                   whileTap={{ scale: 0.95 }}
-                  className="card rounded-2xl overflow-hidden min-w-[90vw] snap-center relative touch-interactive p-0"
+                  className="card rounded-2xl overflow-hidden min-w-[90vw] snap-center relative touch-interactive p-0 flex flex-col"
                 >
                   {/* Status badge - только один бейдж */}
                   <div className="absolute top-4 right-4 z-20">
@@ -162,28 +152,6 @@ export default function InStock() {
                       className="object-cover"
                       sizes="90vw"
                     />
-                    
-                    {/* Navigation buttons */}
-                    <div className="absolute inset-0 flex items-center justify-between p-3">
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation()
-                          prevImage(car.id, car.images.length)
-                        }}
-                        className="w-10 h-10 rounded-full bg-black/50 backdrop-blur-sm text-white flex items-center justify-center hover:bg-black/70 transition-colors"
-                      >
-                        ‹
-                      </button>
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation()
-                          nextImage(car.id, car.images.length)
-                        }}
-                        className="w-10 h-10 rounded-full bg-black/50 backdrop-blur-sm text-white flex items-center justify-center hover:bg-black/70 transition-colors"
-                      >
-                        ›
-                      </button>
-                    </div>
 
                     {/* Image indicators */}
                     <div className="absolute bottom-3 left-0 right-0 flex justify-center gap-1.5">
@@ -208,9 +176,9 @@ export default function InStock() {
                   </div>
 
                   {/* Content */}
-                  <div className="p-5">
+                  <div className="p-5 flex flex-col h-full">
                     <div className="flex items-start justify-between mb-3">
-                      <div>
+                      <div className="flex-1">
                         <h3 className="text-2xl font-bold text-neutral-900 mb-1">
                           {car.brand} {car.model}
                         </h3>
@@ -225,13 +193,13 @@ export default function InStock() {
                           </div>
                         </div>
                       </div>
-                      <div className="text-right">
+                      <div className="text-right flex-shrink-0 ml-3">
                         <div className="text-2xl font-bold text-primary-500">{car.price}</div>
                       </div>
                     </div>
 
                     {/* Features */}
-                    <div className="space-y-2 mb-4">
+                    <div className="space-y-2 mb-4 flex-1 min-h-[72px]">
                       {car.features.map((feature, i) => (
                         <div key={i} className="flex items-center gap-2">
                           <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
@@ -240,24 +208,14 @@ export default function InStock() {
                       ))}
                     </div>
 
-                    {/* CTA buttons */}
-                    <div className="flex flex-col gap-2">
-                      <button
-                        onClick={() => {
-                          const phone = '+79999999999' // Replace with actual phone
-                          window.open(`tel:${phone}`, '_self')
-                        }}
-                        className="w-full btn-primary flex items-center justify-center gap-2"
-                      >
-                        Получить предложение
-                      </button>
-                      <button
-                        onClick={() => setSelectedCar(car.id)}
-                        className="w-full text-sm text-neutral-600 hover:text-neutral-900 transition-colors"
-                      >
-                        Подробнее
-                      </button>
-                    </div>
+                    {/* CTA button */}
+                    <button
+                      onClick={onOpenQuiz}
+                      className="w-full btn-primary flex items-center justify-center gap-2 mt-auto"
+                    >
+                      Получить предложение
+                      <ArrowRight className="w-4 h-4" />
+                    </button>
                   </div>
                 </motion.div>
               )
@@ -269,7 +227,7 @@ export default function InStock() {
         </div>
 
         {/* Desktop: grid */}
-        <div className="hidden lg:grid lg:grid-cols-3 gap-6">
+        <div className="hidden lg:grid lg:grid-cols-3 gap-6 items-stretch">
           {filteredCars.map((car, index) => {
             const currentImg = currentImageIndex[car.id] || 0
             const isAvailable = car.status === 'В наличии'
@@ -282,7 +240,7 @@ export default function InStock() {
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ delay: index * 0.15, duration: 0.8 }}
                 whileHover={{ y: -4 }}
-                className="card rounded-2xl overflow-hidden relative group p-0"
+                className="card rounded-2xl overflow-hidden relative group p-0 flex flex-col"
               >
                 {/* Status badge - только один бейдж */}
                 <div className="absolute top-4 right-4 z-20">
@@ -308,28 +266,6 @@ export default function InStock() {
                     className="object-cover group-hover:scale-110 transition-transform duration-500"
                     sizes="(max-width: 1024px) 100vw, 33vw"
                   />
-                  
-                  {/* Navigation on hover */}
-                  <div className="absolute inset-0 flex items-center justify-between p-4 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        prevImage(car.id, car.images.length)
-                      }}
-                      className="w-12 h-12 rounded-full bg-black/50 backdrop-blur-sm text-white flex items-center justify-center hover:bg-black/70 transition-colors"
-                    >
-                      ‹
-                    </button>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        nextImage(car.id, car.images.length)
-                      }}
-                      className="w-12 h-12 rounded-full bg-black/50 backdrop-blur-sm text-white flex items-center justify-center hover:bg-black/70 transition-colors"
-                    >
-                      ›
-                    </button>
-                  </div>
 
                   {/* Image indicators */}
                   <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-2">
@@ -353,9 +289,9 @@ export default function InStock() {
                 </div>
 
                 {/* Content */}
-                <div className="p-6">
+                <div className="p-6 flex flex-col flex-1">
                   <div className="flex items-start justify-between mb-4">
-                    <div>
+                    <div className="flex-1">
                       <h3 className="text-2xl font-bold text-neutral-900 mb-2">
                         {car.brand} {car.model}
                       </h3>
@@ -370,13 +306,13 @@ export default function InStock() {
                         </div>
                       </div>
                     </div>
-                    <div className="text-right">
+                    <div className="text-right flex-shrink-0 ml-3">
                       <div className="text-2xl font-bold text-primary-500">{car.price}</div>
                     </div>
                   </div>
 
                   {/* Features */}
-                  <div className="space-y-2 mb-6">
+                  <div className="space-y-2 mb-6 flex-1 min-h-[90px]">
                     {car.features.map((feature, i) => (
                       <div key={i} className="flex items-center gap-2">
                         <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
@@ -385,24 +321,14 @@ export default function InStock() {
                     ))}
                   </div>
 
-                  {/* CTA buttons */}
-                  <div className="flex flex-col gap-2">
-                    <button
-                      onClick={() => {
-                        const phone = '+79999999999' // Replace with actual phone
-                        window.open(`tel:${phone}`, '_self')
-                      }}
-                      className="w-full btn-primary"
-                    >
-                      Получить предложение
-                    </button>
-                    <button
-                      onClick={() => setSelectedCar(car.id)}
-                      className="w-full text-sm text-neutral-600 hover:text-neutral-900 transition-colors"
-                    >
-                      Подробнее
-                    </button>
-                  </div>
+                  {/* CTA button */}
+                  <button
+                    onClick={onOpenQuiz}
+                    className="w-full btn-primary flex items-center justify-center gap-2 mt-auto"
+                  >
+                    Получить предложение
+                    <ArrowRight className="w-4 h-4" />
+                  </button>
                 </div>
               </motion.div>
             )

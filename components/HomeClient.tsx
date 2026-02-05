@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Header from '@/components/Header'
 import Hero from '@/components/Hero'
 import Services from '@/components/Services'
 import InStock from '@/components/InStock'
@@ -12,16 +13,22 @@ import FinalCTA from '@/components/FinalCTA'
 import Contacts from '@/components/Contacts'
 import Footer from '@/components/Footer'
 import QuizModal from '@/components/QuizModal'
+import ContractModal from '@/components/ContractModal'
 import StickyCTA from '@/components/StickyCTA'
 
 export default function HomeClient() {
   const [isQuizOpen, setIsQuizOpen] = useState(false)
+  const [isContractOpen, setIsContractOpen] = useState(false)
 
   return (
     <main className="relative overflow-hidden">
-      <Hero onOpenQuiz={() => setIsQuizOpen(true)} />
-      <Services />
-      <InStock />
+      <Header onOpenQuiz={() => setIsQuizOpen(true)} />
+      <Hero 
+        onOpenQuiz={() => setIsQuizOpen(true)} 
+        onOpenContract={() => setIsContractOpen(true)}
+      />
+      <Services onOpenQuiz={() => setIsQuizOpen(true)} />
+      <InStock onOpenQuiz={() => setIsQuizOpen(true)} />
       <HowWeWork />
       <TrustBlock />
       <Cases />
@@ -31,6 +38,7 @@ export default function HomeClient() {
       <Footer />
       <StickyCTA onOpenQuiz={() => setIsQuizOpen(true)} />
       <QuizModal isOpen={isQuizOpen} onClose={() => setIsQuizOpen(false)} />
+      <ContractModal isOpen={isContractOpen} onClose={() => setIsContractOpen(false)} />
     </main>
   )
 }

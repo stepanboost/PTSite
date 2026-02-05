@@ -79,14 +79,7 @@ const config: Config = {
         '30': '7.5rem',
       },
       fontFamily: {
-        sans: ['-apple-system', 'BlinkMacSystemFont', 'SF Pro Display', 'Segoe UI', 'Roboto', 'sans-serif'],
-      },
-      fontSize: {
-        'display': ['2.5rem', { lineHeight: '1.1', letterSpacing: '-0.02em' }],
-        'display-sm': ['1.75rem', { lineHeight: '1.1', letterSpacing: '-0.02em' }],
-        'h1': ['1.5rem', { lineHeight: '1.2', letterSpacing: '-0.01em' }],
-        'h2': ['1.25rem', { lineHeight: '1.3', letterSpacing: '-0.01em' }],
-        'h3': ['1.125rem', { lineHeight: '1.4' }],
+        sans: ['var(--font-din)', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
       },
       animation: {
         'float': 'float 6s ease-in-out infinite',
